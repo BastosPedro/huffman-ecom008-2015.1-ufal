@@ -15,7 +15,12 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    node.cpp \
+    tree.cpp \
+    read.cpp
 
 HEADERS += \
-    huffman.h
+    node.h \
+    tree.h \
+    read.h
