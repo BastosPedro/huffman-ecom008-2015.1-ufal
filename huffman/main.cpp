@@ -1,11 +1,15 @@
 #include <QDebug>
 #include <QString>
-#include "huffman.h"
+//#include "read.h"
+#include "list.h"
+#include "tree.h"
+
+
 int main() {
-    huffman *p = new huffman();
-    int *contador = p->countFreq("//home//pedro//Documents//códigos//teste.txt");
-    for( int i = 0 ; i < 256 ; ++i) {
-        if(contador[i]) qDebug() << "ASCII:" << (int) char(i) << "value:"<< char(i) << "frequency:" << contador[i];
-    }
-   return 0;
+    QList <node*> mexico = list::read("/home/pedro/Documents/atahualpa.txt");
+    tree* huffinho = new tree(mexico);
+    qDebug() << "\n\tShow Tree:\n";
+    huffinho->printTree(huffinho->get());
+    QHash<uchar,QString> hash = huffinho->getHash();
+
 }

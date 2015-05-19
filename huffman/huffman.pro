@@ -18,9 +18,9 @@ TEMPLATE = app
 SOURCES += main.cpp \
     node.cpp \
     tree.cpp \
-    read.cpp
+    list.cpp
 
 HEADERS += \
     node.h \
     tree.h \
-    read.h
+    list.h

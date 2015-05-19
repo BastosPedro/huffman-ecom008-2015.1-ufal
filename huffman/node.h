@@ -1,33 +1,32 @@
 #ifndef NODE_H
 #define NODE_H
+#include<QString>
 
 
 class node
 {
 public:
-    int symbol;
-    int repetition;
-    node* leftchild;
-    node* rightchild;
+    unsigned char m_symbol;
+    unsigned int m_repetition;
+    bool leaf;
+    node *leftchild;
+    node *rightchild;
 
-    node(int repetition, int symbol);
+    node(unsigned int m_repetition, bool leaf, char m_symbol = 0);
 
     ~node();
 
+    node *getLeftchild() const;
+    node *getRightchild() const;
+
+    void setBoth(node *leftchild, node *rightchild);
+    bool isLeaf() const;
 
     unsigned char getSymbol() const;
-    void setSymbol(int value);
+    void setSymbol(unsigned char symbol);
 
-    int getRepetition() const;
-    void setRepetition(int value);
-
-
-    node *getLeftchild() const;
-    void setLeftchild(node *value);
-
-
-    node *getRightchild() const;
-    void setRightchild(node *value);
+    unsigned int getRepetition() const;
+    void setRepetition(unsigned int repetition);
 };
 
 #endif // NODE_H

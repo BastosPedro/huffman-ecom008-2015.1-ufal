@@ -1,34 +1,11 @@
 #include "node.h"
 
 
-int node::getSymbol() const
-{
-    return symbol;
-}
 
-void node::setSymbol(int value)
-{
-    symbol = value;
-}
-
-int node::getRepetition() const
-{
-    return repetition;
-}
-
-void node::setRepetition(int value)
-{
-    repetition = value;
-}
 
 node *node::getLeftchild() const
 {
     return leftchild;
-}
-
-void node::setLeftchild(node *value)
-{
-    leftchild = value;
 }
 
 node *node::getRightchild() const
@@ -36,16 +13,44 @@ node *node::getRightchild() const
     return rightchild;
 }
 
-void node::setRightchild(node *value)
+void node::setBoth(node *leftchild, node *rightchild)
 {
-    rightchild = value;
+    this->leftchild = leftchild;
+    this->rightchild = rightchild;
 }
-node::node(int repetition, int symbol)
+
+bool node::isLeaf() const
 {
-    this->repetition = repetition;
-    this->symbol = symbol;
-    this->leftchild = 0;
-    this->rightchild = 0;
+    return leftchild == 0 && rightchild == 0;
+}
+
+unsigned char node::getSymbol() const
+{
+    return m_symbol;
+}
+
+void node::setSymbol(unsigned char symbol)
+{
+    m_symbol = symbol;
+}
+
+unsigned int node::getRepetition() const
+{
+    return m_repetition;
+}
+
+void node::setRepetition(unsigned int repetition)
+{
+    m_repetition = repetition;
+}
+node::node(unsigned int m_repetition, bool leaf, char m_symbol)
+{
+    this->m_symbol = m_symbol;
+    this->m_repetition = m_repetition;
+    this->leaf = leaf;
+    this->leftchild = leftchild;
+    this->rightchild = rightchild;
+
 }
 
 node::~node()
