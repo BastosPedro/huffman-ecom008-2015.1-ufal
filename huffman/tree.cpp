@@ -65,7 +65,7 @@ void tree::huffcoding(node *node, QString temp)
         temp += '0';
         huffcoding(node->getLeftchild(), temp);
         temp = temp.mid(0, temp.length()-1);
-        temp += 1;
+        temp += '1';
         huffcoding(node->getRightchild(), temp);
     }
 }
