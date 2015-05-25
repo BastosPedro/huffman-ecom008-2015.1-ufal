@@ -1,8 +1,5 @@
 #include "node.h"
 
-
-
-
 node *node::getLeftchild() const
 {
     return leftchild;

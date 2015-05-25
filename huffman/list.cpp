@@ -2,7 +2,7 @@
 
 
 
-bool compare(const node *x, const node *y){
+bool list::compare(const node *x, const node *y){
     if(x->getRepetition() == y->getRepetition()){
         return x->getSymbol() < y->getSymbol();
     }

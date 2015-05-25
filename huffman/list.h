@@ -14,6 +14,7 @@ class list
 public:
     static QList<node*> toQList(int * array);
     static QList<node*> read(QString path);
+    static bool compare(const node *x, const node *y);
     void print(int* text);
 };
 
