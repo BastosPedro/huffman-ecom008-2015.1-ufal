@@ -18,11 +18,11 @@ TEMPLATE = app
 SOURCES += main.cpp \
     node.cpp \
     tree.cpp \
-    list.cpp \
-    compression.cpp
+    compression.cpp \
+    auxilia.cpp
 
 HEADERS += \
     node.h \
     tree.h \
-    list.h \
-    compression.h
+    compression.h \
+    auxilia.h

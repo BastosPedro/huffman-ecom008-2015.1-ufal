@@ -1,17 +1,18 @@
-#include <QDebug>
-#include <QString>
-//#include "read.h"
-#include "list.h"
-#include "tree.h"
+#include "auxilia.h"
 
 
 int main() {
-    QList <node*> mexico = list::read("/home/pedro/Documents/atahualpa.txt");
-    tree* huffinho = new tree(mexico);
-    QHash<uchar,QString> hash = huffinho->getHash();
 
-    qDebug() << "\n\tShow Tree:\n";
-    huffinho->printTree(huffinho->getRoot());
-    qDebug()<< "Representando: " << qPrintable(huffinho->formalizing(huffinho->getRoot()));
+    compression* roma = new compression;
+    roma->setPath("/home/pedro/Documents/atahualpa.txt");
+    roma->byteFrequency();
 
+    tree* invicta = new tree(roma);
+
+    invicta->toHash(invicta->getRoot());
+    invicta->representation(invicta->getRoot());
+
+    roma->setBitString(invicta->getHash());
+
+    auxilia::printAll(invicta, invicta->getRoot(), roma);
 }

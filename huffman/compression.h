@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QIODevice>
 #include <QString>
+#include <QHash>
 
 
 class compression
@@ -12,7 +13,7 @@ class compression
 public:
     int* m_frequency, m_trash;
     QString m_path, bitString;
-    QFile* archive;
+    QFile* m_file;
     QByteArray binaryFile;
 
     compression();
@@ -20,12 +21,12 @@ public:
 
     int* getFrequency() const;
     int getTrash() const;
-    QString getBitString(QHash<uchar, QString> hash);
+    QString getBitString();
 
     void setPath(const QString &path);
     void setReferences();
     void setBitString(QHash<uchar, QString> hash);
-    void byteFrequency(QString Directory);
+    void byteFrequency();
 };
 
 #endif // COMPRESSION_H

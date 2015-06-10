@@ -1,26 +1,42 @@
 #include "tree.h"
+//#include "auxilia.h"
 
 
-tree::tree(QList<node *> list)
+
+QList<node *> tree::getList() const
+{
+    return m_list;
+}
+
+QByteArray tree::getRepresentation() const
+{
+    return m_representation;
+}
+tree::tree(compression*& anyFile)
 {
     root = 0;
+    toList(anyFile);
 
-    this->list = list;
-    while(list.length() > 2){
-        node* temp = new node(list.at(0)->getRepetition() + list.at(1)->getRepetition(), false);
-        temp->setBoth(list.at(0), list.at(1));
-        list.removeFirst();
-        list.removeFirst();
-        list.insert(0, temp);
-        qSort(list.begin(), list.end(), list::compare);
+    Q_ASSERT_X(m_list.length() >= 2, Q_FUNC_INFO, "Cannot build this tree.");
+
+    while(m_list.length() > 2){
+        qSort(m_list.begin(), m_list.end(), compare);
+        node* temp = new node(0, m_list.at(0)->getRepetition() + m_list.at(1)->getRepetition(), m_list.at(0), m_list.at(1));
+        temp->setBoth(m_list.at(0), m_list.at(1));
+        m_list.removeFirst();
+        m_list.removeFirst();
+        m_list.insert(0, temp);
     }
-    if(list.length() == 2){
-        root = new node(list.at(0)->getRepetition() + list.at(1)->getRepetition(), false);
-        root->setBoth(list.at(0), list.at(1));
+    if(m_list.length() == 2){
+        root = new node(0, m_list.at(0)->getRepetition() + m_list.at(1)->getRepetition(), m_list.at(0), m_list.at(1));
+        //root->setBoth(m_list.at(0), m_list.at(1));
+        m_list.removeFirst();
+        m_list.removeFirst();
+        m_list.insert(0,root);
         qDebug() << "- Succesfully built tree :)";
     }
     else{
-        qDebug() << "- Fail :(";
+        qDebug() << "Tree Constructor - Fail :(";
     }
 }
 
@@ -28,59 +44,62 @@ tree::~tree()
 {
 
 }
-
-void tree::printTree(node *node, int level)
-{
-    if(node != 0){
-        printTree(node->getRightchild(), level+1);
-        if(node->isLeaf()){
-            qDebug() << qPrintable(QString("\t").repeated(level)) << char(node->getSymbol()) << "/" << node->getRepetition();
+void tree::toList(compression*& anyFile){
+    for(int count = 0; count < 256; count++) {
+            if(anyFile->getFrequency()[count]) {
+            node * temp = new node(count, anyFile->getFrequency()[count], NULL, NULL);
+            m_list.append(temp);
         }
-        else{
-            qDebug() << qPrintable(QString("\t").repeated(level)) << char(46);
-        }
-        printTree(node->getLeftchild(), level+1);
     }
+    qSort(m_list.begin(), m_list.end(), compare);
 }
 
-void tree::huffcoding(node *node, QString temp)
+bool tree::compare(node *x, node *y)
 {
-    if(node->isLeaf()){
-        hash.insert(node->getSymbol(), temp);
-        qDebug() << "node" << node->getSymbol() << "\nAddded with coding:" << qPrintable(temp);
+    if(x->getRepetition() == y->getRepetition()){
+        return x->getSymbol() < y->getSymbol();
+    }
+    return x->getRepetition() < y->getRepetition();
+}
+
+QHash<uchar, QString> tree::toHash(node* anyNode, QString temp)
+{
+    Q_ASSERT_X(root, Q_FUNC_INFO, "Cannot use this tree.");
+    if(anyNode->isLeaf()){
+        m_hash.insert(anyNode->getSymbol(), temp);
+        qDebug() << "node" << anyNode->getSymbol() << "\nAddded with coding:" << qPrintable(temp);
     }
     else{
         temp += '0';
-        huffcoding(node->getLeftchild(), temp);
+        toHash(anyNode->getLeftchild(), temp);
         temp = temp.mid(0, temp.length()-1);
         temp += '1';
-        huffcoding(node->getRightchild(), temp);
+        toHash(anyNode->getRightchild(), temp);
     }
+    return m_hash;
 }
 
 QByteArray tree::representation(node *anyNode)
 {
-    QByteArray m_representation;
+    QByteArray auxRepresentation;
     if(anyNode->isLeaf()){
         if((anyNode->getSymbol() == 0x21) || (anyNode->getSymbol() == 0x2A)){
-            m_representation.append(0x21);
+            auxRepresentation.append(0x21);
         }
-        m_representation.append(anyNode->getSymbol());
-        return m_representation;
+        auxRepresentation.append(anyNode->getSymbol());
+        return auxRepresentation;
     }
     else{
-        m_representation.append(0x2A);
-        m_representation += representation(anyNode->getLeftchild()) +
-                            representation(anyNode->getRightchild());
+        auxRepresentation.append(0x2A);
+        auxRepresentation += representation(anyNode->getLeftchild()) + representation(anyNode->getRightchild());
     }
-    return m_representation;
+    return auxRepresentation;
 }
 
-QByteArray tree::formalizing(node *anyNode)
+void tree::formalizing(node *anyNode)
 {
-    QByteArray final = representation(anyNode);
-    final.remove(0,1);
-    return final;
+    m_representation = representation(anyNode);
+    m_representation.remove(0,1);
 }
 
 node *tree::getRoot()
@@ -91,10 +110,10 @@ node *tree::getRoot()
 QHash<unsigned char, QString> tree::getHash()
 {
     if(root!=0){
-        huffcoding(root);
+        toHash(root);
         qDebug() << "- Succesful node coding. Yay!";
     }
-    return hash;
+    return m_hash;
 }
 
 

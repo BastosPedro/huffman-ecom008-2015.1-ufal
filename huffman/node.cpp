@@ -2,51 +2,51 @@
 
 node *node::getLeftchild() const
 {
-    return leftchild;
+    return m_leftchild;
 }
 
 node *node::getRightchild() const
 {
-    return rightchild;
+    return m_rightchild;
 }
 
 void node::setBoth(node *leftchild, node *rightchild)
 {
-    this->leftchild = leftchild;
-    this->rightchild = rightchild;
+    m_leftchild = leftchild;
+    m_rightchild = rightchild;
 }
 
 bool node::isLeaf() const
 {
-    return leftchild == 0 && rightchild == 0;
+    if(m_leftchild == 0 && m_rightchild == 0) return true;
+    else return false;
 }
 
-unsigned char node::getSymbol() const
+int node::getSymbol() const
 {
     return m_symbol;
 }
 
-void node::setSymbol(unsigned char symbol)
+void node::setSymbol(int symbol)
 {
     m_symbol = symbol;
 }
 
-unsigned int node::getRepetition() const
+int node::getRepetition() const
 {
     return m_repetition;
 }
 
-void node::setRepetition(unsigned int repetition)
+void node::setRepetition(int repetition)
 {
     m_repetition = repetition;
 }
-node::node(unsigned int m_repetition, bool leaf, char m_symbol)
+node::node(int repetition, int symbol, node *leftchild, node *rightchild)
 {
-    this->m_symbol = m_symbol;
-    this->m_repetition = m_repetition;
-    this->leaf = leaf;
-    this->leftchild = leftchild;
-    this->rightchild = rightchild;
+    m_symbol = symbol;
+    m_repetition = repetition;
+    m_leftchild = leftchild;
+    m_rightchild = rightchild;
 
 }
 

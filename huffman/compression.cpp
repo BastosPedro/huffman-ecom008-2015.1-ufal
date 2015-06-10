@@ -11,6 +11,11 @@ int compression::getTrash() const
     return m_trash;
 }
 
+QString compression::getBitString()
+{
+    return bitString;
+}
+
 void compression::setPath(const QString &path)
 {
     m_path += path;
@@ -18,9 +23,9 @@ void compression::setPath(const QString &path)
 
 void compression::setReferences()
 {
-    file = new QFile(m_path);
-    Q_ASSERT_X(file->open(QIODevice::readOnly), Q_FUNC_INFO, "There is no file");
-    binaryFile = file->readAll();
+    m_file = new QFile(m_path);
+    Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There is no file");
+    binaryFile = m_file->readAll();
 }
 
 void compression::setBitString(QHash<uchar, QString> hash)
@@ -50,7 +55,7 @@ compression::~compression()
 
 }
 
-int *compression::byteFrequency()
+void compression::byteFrequency()
 {
     setReferences();
     for (int count = 0; count != binaryFile.size(); ++count) {

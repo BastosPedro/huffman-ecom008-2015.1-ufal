@@ -1,29 +1,36 @@
 #ifndef TREE_H
 #define TREE_H
-#include<QDebug>
-#include"list.h"
-#include"node.h"
-//#include"read.h"
 
+#include <QDebug>
+#include <QHash>
+#include <QList>
+#include "compression.h"
+#include "node.h"
+//#include "auxilia.h"
 
 class tree
 {
 public:
     node* root;
-    QHash<unsigned char, QString> hash;
-    QList<node*> list;
+    QList<node*> m_list;
+    QByteArray m_representation;
+    QHash<uchar, QString> m_hash;
 
-    tree(QList<node*> list);
+    tree(compression*& anyFile);
     ~tree();
 
-    void printTree(node* node, int level = 0);
-    void huffcoding(node* node, QString temp = "");
+    void toList(compression*& anyFile);
+    void formalizing(node *anyNode);
+    static bool compare(node *x, node *y);
 
     QByteArray representation(node *anyNode);
-    QByteArray formalizing(node *anyNode);
+    QByteArray getRepresentation() const;
+
+    QHash<unsigned char, QString> getHash();
+    QHash<uchar, QString> toHash(node* anyNode, QString temp = "");
 
     node* getRoot();
-    QHash<unsigned char, QString> getHash();
+    QList<node *> getList() const;
 };
 
 #endif // TREE_H
