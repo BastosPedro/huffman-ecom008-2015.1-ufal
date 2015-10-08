@@ -3,13 +3,14 @@
 
 class node
 {
-public:
-    int m_symbol, m_repetition;
+    unsigned char m_symbol;
+    int m_repetition;
     bool m_leaf;
     node *m_leftchild;
     node *m_rightchild;
 
-    node(int repetition, int symbol, node* leftchild, node* rightchild);
+public:
+    node(unsigned char symbol, int repetition, node* leftchild, node* rightchild);
     ~node();
 
     node *getLeftchild() const;
@@ -18,8 +19,8 @@ public:
     void setBoth(node *leftchild, node *rightchild);
     bool isLeaf() const;
 
-    int getSymbol() const;
-    void setSymbol(int symbol);
+    unsigned char getSymbol() const;
+    void setSymbol(unsigned char symbol);
 
     int getRepetition() const;
     void setRepetition(int repetition);

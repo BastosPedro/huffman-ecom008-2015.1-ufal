@@ -6,12 +6,12 @@
 
 class tree
 {
-public:
     node* root;
     QList<node*> m_list;
     QByteArray m_representation;
     QHash<uchar, QString> m_hash;
 
+public:
     tree(encode*& anyFile);
     ~tree();
 

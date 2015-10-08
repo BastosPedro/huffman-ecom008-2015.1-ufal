@@ -43,7 +43,7 @@ bool node::isLeaf() const
     else return false;
 }
 
-node::node(int repetition, unsigned char symbol, node *leftchild, node *rightchild)
+node::node(unsigned char symbol, int repetition, node *leftchild, node *rightchild)
 {
     m_symbol = symbol;
     m_repetition = repetition;

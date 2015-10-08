@@ -5,12 +5,11 @@
 
 class encode
 {
-public:
     int* m_frequency, m_trash;
     QString m_path, bitString;
     QFile* m_file;
     QByteArray binaryFile;
-
+public:
     encode();
     ~encode();
 

@@ -30,7 +30,7 @@ node *tree::getRoot()
 void tree::toList(encode*& anyFile){
     for(int count = 0; count < 256; count++) {
             if(anyFile->getFrequency()[count]) {
-            node * temp = new node(count, anyFile->getFrequency()[count]), NULL, NULL);
+            node * temp = new node(count, anyFile->getFrequency()[count], NULL, NULL);
             m_list.append(temp);
         }
     }
@@ -58,14 +58,14 @@ QByteArray tree::representation(node *anyNode)
 {
     QByteArray auxRepresentation;
     if(anyNode->isLeaf()){
-        if(uchar(anyNode->getSymbol() == 0x21) || anyNode->getSymbol() == 0x2A){
-            auxRepresentation.append(0x21);
+        if(uchar(anyNode->getSymbol() == '!') || anyNode->getSymbol() == '*'){
+            auxRepresentation.append('!');
         }
         auxRepresentation.append(anyNode->getSymbol());
         return auxRepresentation;
     }
     else{
-        auxRepresentation.append(0x2A);
+        auxRepresentation.append('*');
         auxRepresentation += representation(anyNode->getLeftchild()) + representation(anyNode->getRightchild());
     }
     return auxRepresentation;
@@ -79,7 +79,7 @@ void tree::formalizing(node *anyNode)
 
 tree::tree(encode*& anyFile)
 {
-    //root = 0;
+    root = 0;
     toList(anyFile);
 
     Q_ASSERT_X(m_list.length() >= 2, Q_FUNC_INFO, "Cannot build this tree :(");
@@ -89,7 +89,7 @@ tree::tree(encode*& anyFile)
         node* temp = new node(0,  m_list.at(0)->getRepetition()
                                 + m_list.at(1)->getRepetition(),
                                   m_list.at(0), m_list.at(1));
-        //temp->setBoth(m_list.at(0), m_list.at(1));
+        temp->setBoth(m_list.at(0), m_list.at(1));
         m_list.removeFirst();
         m_list.removeFirst();
         m_list.insert(0, temp);
@@ -98,9 +98,7 @@ tree::tree(encode*& anyFile)
         root = new node(0,  m_list.at(0)->getRepetition()
                           + m_list.at(1)->getRepetition(),
                             m_list.at(0), m_list.at(1));
-        m_list.removeFirst();
-        m_list.removeFirst();
-        m_list.insert(0, root);
+        root->setBoth(m_list.at(0), m_list.at(1));
         qDebug() << "- Succesfully built tree :)";
     }
 }
