@@ -1,37 +1,37 @@
-#include "encode.h"
+#include "fileinfo.h"
 
 
-int *encode::getFrequency() const
+int *fileinfo::getFrequency() const
 {
     return m_frequency;
 }
 
-int encode::getTrash() const
+int fileinfo::getTrash() const
 {
     return m_trash;
 }
 
-QString encode::getBitString()
+QString fileinfo::getBitString()
 {
     return bitString;
 }
 
-void encode::setPath(const QString &path)
+void fileinfo::setPath(const QString &path)
 {
     m_path += path;
 }
 
-void encode::setReferences()
+void fileinfo::setReferences()
 {
     m_file = new QFile(m_path);
     Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There is no file");
     binaryFile = m_file->read(1024);
 }
 
-void encode::setBitString(QHash<uchar, QString> hash)
+void fileinfo::setBitString(QVector<uchar> vector)
 {
     for(int count = 0; count != binaryFile.size(); count++) {
-         bitString += hash.value(uchar(binaryFile.at(count)));
+         bitString += vector.value(uchar(binaryFile.at(count)));
      }
 
      if(bitString.size() % 8) {
@@ -41,7 +41,7 @@ void encode::setBitString(QHash<uchar, QString> hash)
      bitString.append("0").repeated(m_trash);
 }
 
-void encode::byteFrequency()
+void fileinfo::byteFrequency()
 {
     setReferences();
     for (int count = 0; count != binaryFile.size(); count++) {
@@ -49,7 +49,7 @@ void encode::byteFrequency()
     }
 }
 
-encode::encode()
+fileinfo::fileinfo()
 {
     m_frequency = new int[256];
     for(int count = 0; count < 256; count++) {
@@ -59,7 +59,7 @@ encode::encode()
     m_path = bitString = "";
 }
 
-encode::~encode()
+fileinfo::~fileinfo()
 {
 
 }

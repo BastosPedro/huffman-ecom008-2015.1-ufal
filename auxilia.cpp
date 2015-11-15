@@ -14,22 +14,21 @@ void auxilia::printList(tree *&anyTree)
 
 void auxilia::printHash(tree *&anyTree)
 {
-    QHash<uchar, QString>::const_iterator count;
+    //QVector<uchar>::const_iterator count;
     qDebug() << endl << endl;
-    for(count = anyTree->getHash().constBegin();
-        count != anyTree->getHash().constEnd(); count++) {
-        qDebug() << char(count.key()) << ": " << qPrintable(count.value()) << endl;
+    for(int count = 0;
+        count < anyTree->getVector().length(); count++) {
+        qDebug() << ": " << qPrintable(anyTree->getVector().at(count)) << endl;
     }
 }
 
 void auxilia::printRepresentation(tree *&anyTree)
 {
-    qDebug() << endl << endl
-             << "Representing the tree: " << endl
+    qDebug() << endl << "Representing the tree: " << endl
              << qPrintable(anyTree->getRepresentation());
 }
 
-void auxilia::printFrequency(encode *&anyFile)
+void auxilia::printFrequency(fileinfo *&anyFile)
 {
     qDebug() << endl << endl;
     for(int count = 0 ; count < 256 ; count++) {
@@ -42,9 +41,9 @@ void auxilia::printFrequency(encode *&anyFile)
     }
 }
 
-void auxilia::printBitString(encode *&anyFile)
+void auxilia::printBitString(fileinfo *&anyFile)
 {
-    qDebug() << endl << endl << "This is the condification in bits: " << endl << anyFile->getBitString();
+    qDebug() << endl << endl << "This is the codification in bits: " << endl << anyFile->getBitString();
 }
 
 void auxilia::printTree(node *anyNode, int level)
@@ -63,7 +62,7 @@ void auxilia::printTree(node *anyNode, int level)
     }
 }
 
-void auxilia::printAll(tree* anyTree, node* anyNode, encode*& anyFile)
+void auxilia::printAll(tree* anyTree, node* anyNode, fileinfo*& anyFile)
 {
     printList(anyTree);
     printHash(anyTree);

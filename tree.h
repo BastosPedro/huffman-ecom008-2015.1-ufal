@@ -1,29 +1,33 @@
 #ifndef TREE_H
 #define TREE_H
 
-#include "encode.h"
+#include "fileinfo.h"
 #include "node.h"
 
 class tree
 {
     node* root;
+    //QString* m_array;
     QList<node*> m_list;
     QByteArray m_representation;
-    QHash<uchar, QString> m_hash;
+    QVector<uchar> m_vector;
+    //QHash<uchar, QString> m_hash;
 
 public:
-    tree(encode*& anyFile);
+    tree(fileinfo*& anyFile);
     ~tree();
 
-    void toList(encode*& anyFile);
-    void formalizing(node *anyNode);
+    void toArray(node *anyNode);
+
+    void toList(fileinfo*& anyFile);
     static bool compare(node *x, node *y);
 
-    QByteArray representation(node *anyNode);
+    void representation(node *anyNode);
     QByteArray getRepresentation() const;
 
+    QVector<uchar> getVector();
     QHash<unsigned char, QString> getHash();
-    QHash<uchar, QString> toHash(node* anyNode, QString temp = "");
+    QVector<uchar> toVector(node* anyNode, QString temp = "");
 
     node* getRoot();
     QList<node *> getList() const;

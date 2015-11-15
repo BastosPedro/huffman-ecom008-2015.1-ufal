@@ -1,17 +1,17 @@
-#ifndef ENCODE_H
-#define ENCODE_H
+#ifndef FILEINFO_H
+#define FILEINFO_H
 
 #include<QtCore>
 
-class encode
+class fileinfo
 {
     int* m_frequency, m_trash;
     QString m_path, bitString;
     QFile* m_file;
     QByteArray binaryFile;
 public:
-    encode();
-    ~encode();
+    fileinfo();
+    ~fileinfo();
 
     int* getFrequency() const;
     int getTrash() const;
@@ -19,8 +19,8 @@ public:
 
     void setPath(const QString &path);
     void setReferences();
-    void setBitString(QHash<uchar, QString> hash);
+    void setBitString(QVector<uchar> vector);
     void byteFrequency();
 };
 
-#endif // encode_H
+#endif // fileinfo_H

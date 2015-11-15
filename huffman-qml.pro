@@ -1,13 +1,13 @@
 TEMPLATE = app
 
-QT += qml quick
+QT += qml quick widgets
 CONFIG += c++11
 
 SOURCES += main.cpp \
     auxilia.cpp \
     node.cpp \
     tree.cpp \
-    encode.cpp
+    fileinfo.cpp
 
 RESOURCES += qml.qrc
 
@@ -21,5 +21,5 @@ HEADERS += \
     auxilia.h \
     node.h \
     tree.h \
-    encode.h
+    fileinfo.h
 
