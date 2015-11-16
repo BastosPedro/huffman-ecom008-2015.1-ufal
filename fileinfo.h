@@ -21,6 +21,7 @@ public:
     void setReferences();
     void setBitString(QVector<uchar> vector);
     void byteFrequency();
+    QString getPath() const;
 };
 
 #endif // fileinfo_H

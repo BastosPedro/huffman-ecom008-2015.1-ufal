@@ -80,12 +80,12 @@ void tree::representation(node *anyNode)
 void tree::buildHeader(QString anyPath, int anyTrash)
 {
     representation(root);
-    QString trash;
-    QString treeLength;
-    QString pathLength;
-    trash.setNum(anyTrash, 2);
-    treeLength.setNum(m_representation.length(), 2);
-    pathLength.setNum(anyPath.length(), 2);
+    QByteArray trash;
+    QByteArray treeLength;
+    QByteArray pathLength;
+    trash.resize(anyTrash);
+    treeLength.resize(m_representation.length());
+    pathLength.setNum(anyPath.length());
     if(trash.length() != 3){
         trash.insert(0, QString('0').repeated(3-trash.length()));
     }
@@ -95,10 +95,11 @@ void tree::buildHeader(QString anyPath, int anyTrash)
     if(pathLength.length() != 256){
         pathLength.insert(0, QString('0').repeated(256-pathLength.length()));
     }
-    m_header = binaryStuff::setBinaryString(trash + treeLength);
-    m_header += binaryStuff::setBinaryString(pathLength);
+    m_header = binaryStuff::setHeaderString(trash + treeLength);
+    m_header += binaryStuff::setHeaderString(pathLength);
     m_header += anyPath;
     m_header += m_representation;
+    qDebug() << endl << "m_header:" << endl << m_header;
 }
 
 // Getters, Setters, etc //

@@ -8,7 +8,7 @@ class binaryStuff
 public:
     static QByteArray bittheByte(QBitArray anyBits);
     static QBitArray bytetheBit(QByteArray anyByte);
-    static QByteArray setBinaryString(QString anyString);
+    static QByteArray setHeaderString(QByteArray anyArray);
 };
 
 #endif // BINARYSTUFF_H

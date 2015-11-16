@@ -1,5 +1,10 @@
 #include "fileinfo.h"
 
+QString fileinfo::getPath() const
+{
+    return m_path;
+}
+
 fileinfo::fileinfo()
 {
     m_frequency = new int[256];

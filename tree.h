@@ -7,8 +7,8 @@
 class tree
 {
     node* root;
-    QString m_representation;
-    QString m_header;
+    QByteArray m_representation;
+    QByteArray m_header;
     QList<node*> m_list;
     QVector<uchar> m_vector;
 

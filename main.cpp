@@ -21,5 +21,7 @@ int main() {
     printer::printAll(invicta, invicta->getRoot(), roma);
     printer::printRepresentation(invicta);
 
+    invicta->buildHeader(roma->getPath(), roma->getTrash());
+
     qDebug("temporis: %d ms", temporis.elapsed());
 }
