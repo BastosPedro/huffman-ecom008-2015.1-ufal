@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "auxilia.h"
+#include "printer.h"
 
 
 int main() {
@@ -18,10 +18,8 @@ int main() {
 
     roma->setBitString(invicta->getVector());
 
-    auxilia::printAll(invicta, invicta->getRoot(), roma);
-    //auxilia::printTree(invicta->getRoot());
-    //auxilia::printFrequency(roma);
-    auxilia::printRepresentation(invicta);
+    printer::printAll(invicta, invicta->getRoot(), roma);
+    printer::printRepresentation(invicta);
 
     qDebug("temporis: %d ms", temporis.elapsed());
 }

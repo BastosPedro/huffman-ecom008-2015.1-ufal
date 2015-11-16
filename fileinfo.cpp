@@ -1,26 +1,29 @@
 #include "fileinfo.h"
 
-
-int *fileinfo::getFrequency() const
+fileinfo::fileinfo()
 {
-    return m_frequency;
+    m_frequency = new int[256];
+    for(int count = 0; count < 256; count++) {
+        m_frequency[count] = 0;
+    }
+    m_trash = 0;
+    m_path = bitString = "";
 }
 
-int fileinfo::getTrash() const
+fileinfo::~fileinfo()
 {
-    return m_trash;
+
 }
 
-QString fileinfo::getBitString()
+void fileinfo::byteFrequency()
 {
-    return bitString;
+    setReferences();
+    for (int count = 0; count != binaryFile.size(); count++) {
+        m_frequency[uchar(binaryFile.at(count))]++;
+    }
 }
 
-void fileinfo::setPath(const QString &path)
-{
-    m_path += path;
-}
-
+// Getters, Setters, etc //
 void fileinfo::setReferences()
 {
     m_file = new QFile(m_path);
@@ -37,29 +40,25 @@ void fileinfo::setBitString(QVector<uchar> vector)
      if(bitString.size() % 8) {
          m_trash = 8 - (bitString.size() % 8);
      }
-
      bitString.append("0").repeated(m_trash);
 }
 
-void fileinfo::byteFrequency()
+void fileinfo::setPath(const QString &path)
 {
-    setReferences();
-    for (int count = 0; count != binaryFile.size(); count++) {
-        m_frequency[uchar(binaryFile.at(count))]++;
-    }
+    m_path += path;
 }
 
-fileinfo::fileinfo()
+int *fileinfo::getFrequency() const
 {
-    m_frequency = new int[256];
-    for(int count = 0; count < 256; count++) {
-        m_frequency[count] = 0;
-    }
-    m_trash = 0;
-    m_path = bitString = "";
+    return m_frequency;
 }
 
-fileinfo::~fileinfo()
+int fileinfo::getTrash() const
 {
+    return m_trash;
+}
 
+QString fileinfo::getBitString()
+{
+    return bitString;
 }

@@ -4,10 +4,11 @@ QT += qml quick widgets
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    auxilia.cpp \
     node.cpp \
     tree.cpp \
-    fileinfo.cpp
+    fileinfo.cpp \
+    printer.cpp \
+    binarystuff.cpp
 
 RESOURCES += qml.qrc
 
@@ -18,8 +19,9 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    auxilia.h \
     node.h \
     tree.h \
-    fileinfo.h
+    fileinfo.h \
+    printer.h \
+    binarystuff.h
 

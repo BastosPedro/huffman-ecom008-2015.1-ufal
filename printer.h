@@ -1,13 +1,13 @@
-#ifndef AUXILIA_H
-#define AUXILIA_H
+#ifndef PRINTER_H
+#define PRINTER_H
 
 #include"tree.h"
 
-class auxilia
+class printer
 {
 public:
     static void printList(tree*& anyTree);
-    static void printHash(tree*& anyTree);
+    static void printVector(tree*& anyTree);
     static void printRepresentation(tree*& anyTree);
     static void printFrequency(fileinfo*& anyFile);
     static void printBitString(fileinfo *&anyFile);
@@ -16,4 +16,4 @@ public:
     static void printAll(tree *anyTree, node *anyNode, fileinfo *&anyFile);
 };
 
-#endif // AUXILIA_H
+#endif // PRINTER_H

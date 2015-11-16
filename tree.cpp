@@ -8,7 +8,6 @@ tree::tree(fileinfo*& anyFile)
     Q_ASSERT_X(m_list.length() >= 2, Q_FUNC_INFO, "Cannot build this tree :(");
 
     while(m_list.length() > 2){
-        qSort(m_list.begin(), m_list.end(), compare);
         node* temp = new node(0,  m_list.at(0)->getRepetition()
                                 + m_list.at(1)->getRepetition(),
                                   m_list.at(0), m_list.at(1));
@@ -16,6 +15,7 @@ tree::tree(fileinfo*& anyFile)
         m_list.removeFirst();
         m_list.removeFirst();
         m_list.insert(0, temp);
+        qSort(m_list.begin(), m_list.end(), compare);
     }
     if(m_list.length() == 2){
         root = new node(0,  m_list.at(0)->getRepetition()
@@ -45,6 +45,7 @@ QVector<uchar> tree::toVector(node* anyNode, QString temp)
 {
     Q_ASSERT_X(root, Q_FUNC_INFO, "Cannot use this tree.");
     QVector<uchar> anyVector;
+
     if(anyNode->isLeaf()){
         anyVector.append(anyNode->getSymbol());
         qDebug() << "node" << anyNode->getSymbol() << "\nAddded with coding:" << qPrintable(temp);
@@ -52,7 +53,7 @@ QVector<uchar> tree::toVector(node* anyNode, QString temp)
     else{
         temp += '0';
         toVector(anyNode->getLeftchild(), temp);
-        temp = temp.mid(0, temp.length()-1);
+        temp.chop(1);
         temp += '1';
         toVector(anyNode->getRightchild(), temp);
     }
@@ -61,33 +62,52 @@ QVector<uchar> tree::toVector(node* anyNode, QString temp)
 
 void tree::representation(node *anyNode)
 {
-    if(anyNode->isLeaf()){
-        if(uchar(anyNode->getSymbol() == '*') || anyNode->getSymbol() == '!'){
-            m_representation.append('!');
+   if(anyNode != 0){
+       if(anyNode->isLeaf()){
+           if(uchar(anyNode->getSymbol() == '*') || anyNode->getSymbol() == '!'){
+                m_representation += '!';
+            }
+            m_representation += anyNode->getSymbol();
         }
-        m_representation.append(anyNode->getSymbol());
-    }
-    else{
-        m_representation.append('*');
-        representation(anyNode->getLeftchild());
-        representation(anyNode->getRightchild());
-    }
+        else{
+            m_representation += '*';
+            representation(anyNode->getLeftchild());
+            representation(anyNode->getRightchild());
+        }
+   }
 }
 
-bool tree::compare(node *x, node *y)
+void tree::buildHeader(QString anyPath, int anyTrash)
 {
-    if(x->getRepetition() == y->getRepetition()){
-        return x->getSymbol() < y->getSymbol();
+    representation(root);
+    QString trash;
+    QString treeLength;
+    QString pathLength;
+    trash.setNum(anyTrash, 2);
+    treeLength.setNum(m_representation.length(), 2);
+    pathLength.setNum(anyPath.length(), 2);
+    if(trash.length() != 3){
+        trash.insert(0, QString('0').repeated(3-trash.length()));
     }
-    return x->getRepetition() < y->getRepetition();
+    if(treeLength.length() != 13){
+        treeLength.insert(0, QString('0').repeated(13-trash.length()));
+    }
+    if(pathLength.length() != 256){
+        pathLength.insert(0, QString('0').repeated(256-pathLength.length()));
+    }
+    m_header = binaryStuff::setBinaryString(trash + treeLength);
+    m_header += binaryStuff::setBinaryString(pathLength);
+    m_header += anyPath;
+    m_header += m_representation;
 }
-// Getters //
+
+// Getters, Setters, etc //
 QList<node *> tree::getList() const
 {
     return m_list;
 }
 
-QByteArray tree::getRepresentation() const
+QString tree::getRepresentation() const
 {
     return m_representation;
 }
@@ -106,3 +126,10 @@ node *tree::getRoot()
     return root;
 }
 
+bool tree::compare(node *x, node *y)
+{
+    if(x->getRepetition() == y->getRepetition()){
+        return x->getSymbol() < y->getSymbol();
+    }
+    return x->getRepetition() < y->getRepetition();
+}

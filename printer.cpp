@@ -1,8 +1,8 @@
-#include "auxilia.h"
+#include "printer.h"
 
 
 
-void auxilia::printList(tree *&anyTree)
+void printer::printList(tree *&anyTree)
 {
     qDebug() << endl << endl;
     for(int count = 0; count < anyTree->getList().size(); count++){
@@ -12,23 +12,21 @@ void auxilia::printList(tree *&anyTree)
     qDebug() << endl << endl;
 }
 
-void auxilia::printHash(tree *&anyTree)
+void printer::printVector(tree *&anyTree)
 {
-    //QVector<uchar>::const_iterator count;
     qDebug() << endl << endl;
-    for(int count = 0;
-        count < anyTree->getVector().length(); count++) {
+    for(int count = 0; count < anyTree->getVector().length(); count++) {
         qDebug() << ": " << qPrintable(anyTree->getVector().at(count)) << endl;
     }
 }
 
-void auxilia::printRepresentation(tree *&anyTree)
+void printer::printRepresentation(tree *&anyTree)
 {
     qDebug() << endl << "Representing the tree: " << endl
              << qPrintable(anyTree->getRepresentation());
 }
 
-void auxilia::printFrequency(fileinfo *&anyFile)
+void printer::printFrequency(fileinfo *&anyFile)
 {
     qDebug() << endl << endl;
     for(int count = 0 ; count < 256 ; count++) {
@@ -41,31 +39,30 @@ void auxilia::printFrequency(fileinfo *&anyFile)
     }
 }
 
-void auxilia::printBitString(fileinfo *&anyFile)
+void printer::printBitString(fileinfo *&anyFile)
 {
     qDebug() << endl << endl << "This is the codification in bits: " << endl << anyFile->getBitString();
 }
 
-void auxilia::printTree(node *anyNode, int level)
+void printer::printTree(node *anyNode, int level)
 {
     if(anyNode != 0) {
         printTree(anyNode->getRightchild(), level + 1);
         if(anyNode->isLeaf()){
                 qDebug() << qPrintable(QString("\t").repeated(level))
-                         << char(anyNode->getSymbol()) << "/"
-                         << anyNode->getRepetition();
+                         << uchar(anyNode->getSymbol()) << "/" << anyNode->getRepetition();
         }
         else{
            qDebug() << qPrintable(QString("\t").repeated(level)) << char(46);
-           printTree(anyNode->getLeftchild(), level + 1);
-       }
+        }
+        printTree(anyNode->getLeftchild(), level + 1);
     }
 }
 
-void auxilia::printAll(tree* anyTree, node* anyNode, fileinfo*& anyFile)
+void printer::printAll(tree* anyTree, node* anyNode, fileinfo*& anyFile)
 {
     printList(anyTree);
-    printHash(anyTree);
+    printVector(anyTree);
     printRepresentation(anyTree);
     printFrequency(anyFile);
     printTree(anyNode);
