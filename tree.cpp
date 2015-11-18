@@ -64,7 +64,7 @@ void tree::representation(node *anyNode)
 {
    if(anyNode != 0){
        if(anyNode->isLeaf()){
-           if(uchar(anyNode->getSymbol() == '*') || anyNode->getSymbol() == '!'){
+           if((uchar(anyNode->getSymbol() == '*')) || (uchar (anyNode->getSymbol() == '!'))){
                 m_representation += '!';
             }
             m_representation += anyNode->getSymbol();
@@ -79,27 +79,26 @@ void tree::representation(node *anyNode)
 
 void tree::buildHeader(QString anyPath, int anyTrash)
 {
+    m_representation.clear();
     representation(root);
-    QByteArray trash;
-    QByteArray treeLength;
-    QByteArray pathLength;
-    trash.resize(anyTrash);
-    treeLength.resize(m_representation.length());
-    pathLength.setNum(anyPath.length());
-    if(trash.length() != 3){
-        trash.insert(0, QString('0').repeated(3-trash.length()));
+    QString trash = QString::number(anyTrash, 2);
+    QString treeLength = QString::number(m_representation.size(), 2);
+    QString pathLength = QString::number(anyPath.size(), 2);
+    if(trash.length() < 3){
+        trash.append(QString('0').repeated(3-trash.length()));
     }
-    if(treeLength.length() != 13){
-        treeLength.insert(0, QString('0').repeated(13-trash.length()));
+    if(treeLength.length() < 13){
+        treeLength.append(QString('0').repeated(13-trash.length()));
     }
-    if(pathLength.length() != 256){
-        pathLength.insert(0, QString('0').repeated(256-pathLength.length()));
+    if(pathLength.length() < 8){
+        pathLength.append(QString('0').repeated(8-pathLength.length()));
     }
-    m_header = binaryStuff::setHeaderString(trash + treeLength);
+    m_header = binaryStuff::setHeaderString(trash);
+    m_header += binaryStuff::setHeaderString(treeLength);
     m_header += binaryStuff::setHeaderString(pathLength);
     m_header += anyPath;
     m_header += m_representation;
-    qDebug() << endl << "m_header:" << endl << m_header;
+    qDebug() << endl << endl << "m_header:" << endl << m_header;
 }
 
 // Getters, Setters, etc //

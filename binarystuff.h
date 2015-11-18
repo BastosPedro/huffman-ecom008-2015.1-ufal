@@ -6,9 +6,9 @@
 class binaryStuff
 {
 public:
-    static QByteArray bittheByte(QBitArray anyBits);
+    static QByteArray bittheByte(QBitArray &anyBits);
     static QBitArray bytetheBit(QByteArray anyByte);
-    static QByteArray setHeaderString(QByteArray anyArray);
+    static QByteArray setHeaderString(QString anyArray);
 };
 
 #endif // BINARYSTUFF_H

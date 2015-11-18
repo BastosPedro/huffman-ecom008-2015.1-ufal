@@ -1,14 +1,14 @@
 #include "binarystuff.h"
 
-QByteArray binaryStuff::bittheByte(QBitArray anyBits)
+QByteArray binaryStuff::bittheByte(QBitArray &anyBits)
 {
-    QByteArray auxBytes;
-    auxBytes.resize(anyBits.count()/8+1);
-    auxBytes.fill(0);
-    for(int aux = 0; aux < (anyBits.count()); aux++){
-        auxBytes[aux/8] = (auxBytes.at(aux/8) | ((anyBits[aux]?1:0) << (aux%8)));
+    QByteArray auxBytes(anyBits.count()/8, '0');
+    int aux = anyBits.count();
+    for(int countx = 0; countx < aux; countx++){
+        auxBytes[(countx/8)] = (auxBytes.at(countx/8) | ((anyBits.at(countx)?1:0) << (7 - (countx%8))));
     }
-    //qDebug() << "result:" << auxBytes;
+    qDebug() << "result:" << auxBytes.toHex();
+    qDebug() << "sei la:" << aux;
     return auxBytes;
 }
 
@@ -25,22 +25,23 @@ QBitArray binaryStuff::bytetheBit(QByteArray anyByte)
     return auxBits;
 }
 
-QByteArray binaryStuff::setHeaderString(QByteArray anyArray)
+QByteArray binaryStuff::setHeaderString(QString anyString)
 {
     QByteArray auxBytes;
     QBitArray auxBits(8);
-    for(int countx = 0, county = 0; countx < anyArray.length(); countx++, county++){
+    int aux = anyString.length();
+    //qDebug() << "whatever" << aux;
+    for(int countx = 0, county = 0; countx < aux; countx++, county++){
         if(county == 7){
             county = 0;
             auxBytes += bittheByte(auxBits);
         }
-        if(anyArray.at(countx) == '1'){
+        if(anyString.at(countx) == '1'){
             auxBits.setBit(countx, true);
         }
         else{
             auxBits.setBit(county, false);
         }
     }
-    //qDebug() << "ue, rodou wtf" << endl << auxBytes;
     return auxBytes;
 }
