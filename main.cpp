@@ -17,11 +17,12 @@ int main() {
     invicta->representation(invicta->getRoot());
 
     roma->setBitString(invicta->getVector());
+    qDebug() << "tamanho do lixo:" << roma->getTrash();
 
     printer::printAll(invicta, invicta->getRoot(), roma);
     printer::printRepresentation(invicta);
 
-    invicta->buildHeader(roma->getPath(), roma->getTrash());
+    invicta->buildHeader(roma->getPath(), roma->getBitString(), roma->getTrash());
 
     qDebug("temporis: %d ms", temporis.elapsed());
 }

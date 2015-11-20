@@ -23,7 +23,8 @@ fileinfo::~fileinfo()
 void fileinfo::byteFrequency()
 {
     setReferences();
-    for (int count = 0; count != binaryFile.size(); count++) {
+    int size = binaryFile.size();
+    for (int count = 0; count != size; count++) {
         m_frequency[uchar(binaryFile.at(count))]++;
     }
 }
@@ -36,16 +37,19 @@ void fileinfo::setReferences()
     binaryFile = m_file->read(1024);
 }
 
-void fileinfo::setBitString(QVector<uchar> vector)
+void fileinfo::setBitString(QVector<QString> vector)
 {
-    for(int count = 0; count != binaryFile.size(); count++) {
-         bitString += vector.value(uchar(binaryFile.at(count)));
-     }
+    int aux = binaryFile.size();
+    for(int count = 0; count < aux; count++) {
+         bitString += vector.value(binaryFile.at(count));
 
-     if(bitString.size() % 8) {
+    }
+    qDebug() << "binaryfile: " << binaryFile;
+    if(bitString.size() % 8) {
          m_trash = 8 - (bitString.size() % 8);
-     }
-     bitString.append("0").repeated(m_trash);
+    }
+
+    //bitString.append("0").repeated(m_trash);
 }
 
 void fileinfo::setPath(const QString &path)
@@ -63,7 +67,7 @@ int fileinfo::getTrash() const
     return m_trash;
 }
 
-QString fileinfo::getBitString()
+QByteArray fileinfo::getBitString()
 {
     return bitString;
 }

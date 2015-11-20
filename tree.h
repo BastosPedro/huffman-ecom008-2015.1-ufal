@@ -7,10 +7,9 @@
 class tree
 {
     node* root;
-    QByteArray m_representation;
-    QByteArray m_header;
+    QByteArray m_representation, auxRep, m_header;
     QList<node*> m_list;
-    QVector<uchar> m_vector;
+    QVector<QString> m_vector;
 
 public:
     tree(fileinfo*& anyFile);
@@ -19,11 +18,11 @@ public:
     static bool compare(node *x, node *y);
     void representation(node *anyNode);
     void toList(fileinfo*& anyFile);
-    void buildHeader(QString anyPath, int anyTrash);
-    QVector<uchar> toVector(node* anyNode, QString temp = "");
+    void buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash);
+    void toVector(const node* anyNode, QString temp = "");
 
     node* getRoot();
-    QVector<uchar> getVector();
+    QVector<QString> getVector();
     QString getRepresentation() const;
     QList<node *> getList() const;
 };

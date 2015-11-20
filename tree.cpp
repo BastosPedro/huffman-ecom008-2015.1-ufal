@@ -41,13 +41,14 @@ void tree::toList(fileinfo*& anyFile){
     qSort(m_list.begin(), m_list.end(), compare);
 }
 
-QVector<uchar> tree::toVector(node* anyNode, QString temp)
+void tree::toVector(const node* anyNode, QString temp)
 {
     Q_ASSERT_X(root, Q_FUNC_INFO, "Cannot use this tree.");
-    QVector<uchar> anyVector;
+    //QVector<QString> anyVector(256);
+    m_vector.resize(256);
 
     if(anyNode->isLeaf()){
-        anyVector.append(anyNode->getSymbol());
+        m_vector.insert(anyNode->getSymbol(), temp);
         qDebug() << "node" << anyNode->getSymbol() << "\nAddded with coding:" << qPrintable(temp);
     }
     else{
@@ -57,7 +58,8 @@ QVector<uchar> tree::toVector(node* anyNode, QString temp)
         temp += '1';
         toVector(anyNode->getRightchild(), temp);
     }
-    return anyVector;
+    //auxRep += temp;
+    //return anyVector;
 }
 
 void tree::representation(node *anyNode)
@@ -77,28 +79,31 @@ void tree::representation(node *anyNode)
    }
 }
 
-void tree::buildHeader(QString anyPath, int anyTrash)
+void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash)
 {
     m_representation.clear();
     representation(root);
     QString trash = QString::number(anyTrash, 2);
     QString treeLength = QString::number(m_representation.size(), 2);
-    QString pathLength = QString::number(anyPath.size(), 2);
+    QString nameFile = QFileInfo(anyPath).fileName();
     if(trash.length() < 3){
-        trash.append(QString('0').repeated(3-trash.length()));
+        trash.prepend(QString('0').repeated(3-trash.length()));
     }
     if(treeLength.length() < 13){
-        treeLength.append(QString('0').repeated(13-trash.length()));
+        treeLength.prepend(QString('0').repeated(13-treeLength.length()));
     }
-    if(pathLength.length() < 8){
-        pathLength.append(QString('0').repeated(8-pathLength.length()));
-    }
-    m_header = binaryStuff::setHeaderString(trash);
-    m_header += binaryStuff::setHeaderString(treeLength);
-    m_header += binaryStuff::setHeaderString(pathLength);
-    m_header += anyPath;
+    qDebug() << endl << "trash, treelength, namelength, bintree:" << endl
+             << trash << treeLength << nameFile.length() << anyCodification.length() << endl;
+    m_header.append(binaryStuff::setHeaderString(trash));
+    qDebug() << "after trash:" << endl << m_header.toHex();
+    m_header.append(binaryStuff::setHeaderString(treeLength));
+    qDebug() << "after treeLength" << endl << m_header.toHex();
+    m_header += nameFile.length();
+    m_header += nameFile;
     m_header += m_representation;
-    qDebug() << endl << endl << "m_header:" << endl << m_header;
+    m_header += binaryStuff::setHeaderString(anyCodification);
+    m_header += binaryStuff::setHeaderString(QString('0').repeated(anyTrash));
+    qDebug() << endl << "after all" << endl << m_header;
 }
 
 // Getters, Setters, etc //
@@ -112,12 +117,8 @@ QString tree::getRepresentation() const
     return m_representation;
 }
 
-QVector<uchar> tree::getVector()
+QVector<QString> tree::getVector()
 {
-   if(root!=0){
-       m_vector = toVector(root);
-       qDebug() << "- Succesful node coding.";
-   }
    return m_vector;
 }
 

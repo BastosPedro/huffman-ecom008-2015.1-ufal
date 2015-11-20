@@ -6,20 +6,21 @@
 class fileinfo
 {
     int* m_frequency, m_trash;
-    QString m_path, bitString;
+    QString m_path;
     QFile* m_file;
-    QByteArray binaryFile;
+    QByteArray binaryFile, bitString;
 public:
+
     fileinfo();
     ~fileinfo();
 
     int* getFrequency() const;
     int getTrash() const;
-    QString getBitString();
+    QByteArray getBitString();
 
     void setPath(const QString &path);
     void setReferences();
-    void setBitString(QVector<uchar> vector);
+    void setBitString(QVector<QString> vector);
     void byteFrequency();
     QString getPath() const;
 };

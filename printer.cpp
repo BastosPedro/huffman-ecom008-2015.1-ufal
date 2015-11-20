@@ -33,7 +33,7 @@ void printer::printFrequency(fileinfo *&anyFile)
         if(anyFile->getFrequency()[count]) {
             qDebug() << qPrintable(QString(count)) << "\t"
                      << "ASCII:\t" << count << "\t"
-                     << "Symbol:\t" <<char(count) << "\t"
+                     << "Symbol:\t" << char(count) << "\t"
                      << "Repetitions:\t" << anyFile->getFrequency()[count];
         }
     }
