@@ -58,8 +58,6 @@ void tree::toVector(const node* anyNode, QString temp)
         temp += '1';
         toVector(anyNode->getRightchild(), temp);
     }
-    //auxRep += temp;
-    //return anyVector;
 }
 
 void tree::representation(node *anyNode)
@@ -99,11 +97,16 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
     m_header.append(binaryStuff::setHeaderString(treeLength));
     qDebug() << "after treeLength" << endl << m_header.toHex();
     m_header += nameFile.length();
+    qDebug() << "after nameLength" << endl << m_header.toHex();
     m_header += nameFile;
+    qDebug() << "after nameFile" << endl << m_header.toHex();
     m_header += m_representation;
+    qDebug() << "after representation" << endl << m_header.toHex();
     m_header += binaryStuff::setHeaderString(anyCodification);
+    qDebug() << "after codification" << endl << m_header.toHex();
     m_header += binaryStuff::setHeaderString(QString('0').repeated(anyTrash));
-    qDebug() << endl << "after all" << endl << m_header;
+    qDebug() << "after trash";
+    qDebug() << endl << "after all" << endl << m_header.toHex();
 }
 
 // Getters, Setters, etc //
@@ -126,6 +129,12 @@ node *tree::getRoot()
 {
     return root;
 }
+
+QByteArray tree::getHeader() const
+{
+    return m_header;
+}
+
 
 bool tree::compare(node *x, node *y)
 {

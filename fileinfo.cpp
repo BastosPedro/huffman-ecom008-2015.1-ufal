@@ -29,12 +29,26 @@ void fileinfo::byteFrequency()
     }
 }
 
+void fileinfo::deliverPackage(QByteArray anyHeader){
+    QString auxPath = m_path;
+    auxPath.chop(auxPath.size() - auxPath.lastIndexOf('.'));
+    auxPath.append(".huff");
+    qDebug()<< "caminho de volta:" << auxPath;
+    QFile finalFile(auxPath);
+    finalFile.open(QIODevice::WriteOnly);
+    finalFile.write(anyHeader);
+    finalFile.close();
+
+}
+
 // Getters, Setters, etc //
 void fileinfo::setReferences()
 {
     m_file = new QFile(m_path);
     Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There is no file");
-    binaryFile = m_file->read(1024);
+    while(!m_file->atEnd()){
+        binaryFile += m_file->readLine(8000000);
+    }
 }
 
 void fileinfo::setBitString(QVector<QString> vector)
@@ -48,8 +62,6 @@ void fileinfo::setBitString(QVector<QString> vector)
     if(bitString.size() % 8) {
          m_trash = 8 - (bitString.size() % 8);
     }
-
-    //bitString.append("0").repeated(m_trash);
 }
 
 void fileinfo::setPath(const QString &path)

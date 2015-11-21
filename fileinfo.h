@@ -22,6 +22,7 @@ public:
     void setReferences();
     void setBitString(QVector<QString> vector);
     void byteFrequency();
+    void deliverPackage(QByteArray anyHeader);
     QString getPath() const;
 };
 

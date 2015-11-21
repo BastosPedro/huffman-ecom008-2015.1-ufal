@@ -25,6 +25,7 @@ public:
     QVector<QString> getVector();
     QString getRepresentation() const;
     QList<node *> getList() const;
+    QByteArray getHeader() const;
 };
 
 #endif // TREE_H

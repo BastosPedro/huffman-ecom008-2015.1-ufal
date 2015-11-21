@@ -2,8 +2,13 @@
 
 QByteArray binaryStuff::bittheByte(QBitArray anyBits)
 {
-    QByteArray auxBytes = 0;
-    //int aux = anyBits.size();
+    int aux = anyBits.count();
+    QByteArray auxBytes;
+    /*auxBytes.resize(aux/8);
+    auxBytes.fill(0);
+    for(int count = 0; count < aux; count++){
+        auxBytes[aux/8] = (auxBytes.at(aux/8) | (anyBits[aux] ? 1:0)<<(aux%8));
+    }*/
     for(int count = 0; count < 7; count++){
         if(anyBits.at(7-count) == true){
             auxBytes += qPow(2, count);
@@ -25,20 +30,11 @@ QBitArray binaryStuff::bytetheBit(QByteArray anyByte)
     //qDebug() << "result:" << auxBits;
     return auxBits;
 }
-QByteArray binaryStuff::appendQVector(QVector<uchar> anyVector){
-    QByteArray auxBytes;
-    int aux = anyVector.size();
-    auxBytes.resize(aux);
-    for(int count = 0; count < aux; count++){
-        auxBytes[count] = anyVector[count];
-    }
-    return auxBytes;
-}
 
 QByteArray binaryStuff::setHeaderString(QString anyString)
 {
     QByteArray auxBytes;
-    /*QBitArray auxBits(8);
+    QBitArray auxBits(8);
     int aux = anyString.length();
     //qDebug() << "whatever" << aux;
     for(int countx = 0, county = 0; countx < aux; countx++, county++){
@@ -52,14 +48,14 @@ QByteArray binaryStuff::setHeaderString(QString anyString)
         else{
             auxBits.clearBit(county);
         }
-    }*/
-    while(anyString.length()){
+    }
+    /*while(anyString.length()){
         QString byte = anyString.left(8);
         anyString.remove(0, 8);
         //std::reverse(byte.begin(), byte.end());
         char aux = byte.toInt(0, 2);
         auxBytes.append(aux);
-    }
+    }*/
     //std::reverse(auxBytes.begin(), auxBytes.end());
     //qDebug() << "result:" << auxBytes;
     return auxBytes;

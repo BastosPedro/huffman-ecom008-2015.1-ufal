@@ -8,7 +8,7 @@ int main() {
     temporis.start();
 
     fileinfo* roma = new fileinfo;
-    roma->setPath("/home/pedro/Documents/samples/standardascii.txt");
+    roma->setPath("/home/pedro/Documents/samples/jamanta.bmp");
     roma->byteFrequency();
 
     tree* invicta = new tree(roma);
@@ -23,6 +23,6 @@ int main() {
     printer::printRepresentation(invicta);
 
     invicta->buildHeader(roma->getPath(), roma->getBitString(), roma->getTrash());
-
-    qDebug("temporis: %d ms", temporis.elapsed());
+    roma->deliverPackage(invicta->getHeader());
+    qDebug("\ntemporis: %d segundos", temporis.elapsed()/1000);
 }
