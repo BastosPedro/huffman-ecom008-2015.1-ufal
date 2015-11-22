@@ -29,12 +29,15 @@ void fileinfo::byteFrequency()
     }
 }
 
-void fileinfo::deliverPackage(QByteArray anyHeader){
-    QString auxPath = m_path;
-    auxPath.chop(auxPath.size() - auxPath.lastIndexOf('.'));
-    auxPath.append(".huff");
-    qDebug()<< "caminho de volta:" << auxPath;
-    QFile finalFile(auxPath);
+void fileinfo::deliverPackageC(QByteArray anyHeader, QString out){
+    if(out == ""){
+         path_out = m_path;
+         path_out.chop(path_out.size() - path_out.lastIndexOf('.'));
+         path_out.append(".huff");
+    }
+    else path_out = out;
+    qDebug()<< "caminho de volta:" << path_out;
+    QFile finalFile(path_out);
     finalFile.open(QIODevice::WriteOnly);
     finalFile.write(anyHeader);
     finalFile.close();

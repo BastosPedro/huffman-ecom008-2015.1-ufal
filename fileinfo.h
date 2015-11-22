@@ -6,7 +6,7 @@
 class fileinfo
 {
     int* m_frequency, m_trash;
-    QString m_path;
+    QString m_path, path_out;
     QFile* m_file;
     QByteArray binaryFile, bitString;
 public:
@@ -22,7 +22,7 @@ public:
     void setReferences();
     void setBitString(QVector<QString> vector);
     void byteFrequency();
-    void deliverPackage(QByteArray anyHeader);
+    void deliverPackageC(QByteArray anyHeader, QString out);
     QString getPath() const;
 };
 
