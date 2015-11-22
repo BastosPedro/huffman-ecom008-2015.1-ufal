@@ -90,7 +90,7 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
     if(treeLength.length() < 13){
         treeLength.prepend(QString('0').repeated(13-treeLength.length()));
     }
-    qDebug() << endl << "trash, treelength, namelength, bintree:" << endl
+    qDebug() << endl << "trash, treelength, namelength, binlength:" << endl
              << trash << treeLength << nameFile.length() << anyCodification.length() << endl;
     m_header.append(binaryStuff::setHeaderString(trash));
     qDebug() << "after trash:" << endl << m_header.toHex();

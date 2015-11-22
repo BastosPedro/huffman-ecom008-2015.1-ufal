@@ -8,7 +8,7 @@ int main() {
     temporis.start();
 
     fileinfo* roma = new fileinfo;
-    roma->setPath("/home/pedro/Documents/samples/jamanta.bmp");
+    roma->setPath("/home/pedro/Documents/samples/guilin_china.bmp");
     roma->byteFrequency();
 
     tree* invicta = new tree(roma);
@@ -17,7 +17,7 @@ int main() {
     invicta->representation(invicta->getRoot());
 
     roma->setBitString(invicta->getVector());
-    qDebug() << "tamanho do lixo:" << roma->getTrash();
+    //Debug() << "tamanho do lixo:" << roma->getTrash();
 
     printer::printAll(invicta, invicta->getRoot(), roma);
     printer::printRepresentation(invicta);

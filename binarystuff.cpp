@@ -4,16 +4,16 @@ QByteArray binaryStuff::bittheByte(QBitArray anyBits)
 {
     int aux = anyBits.count();
     QByteArray auxBytes;
-    /*auxBytes.resize(aux/8);
+    auxBytes.resize(aux/8);
     auxBytes.fill(0);
     for(int count = 0; count < aux; count++){
-        auxBytes[aux/8] = (auxBytes.at(aux/8) | (anyBits[aux] ? 1:0)<<(aux%8));
-    }*/
-    for(int count = 0; count < 7; count++){
+        auxBytes[count/8] = (auxBytes.at(count/8)) | ((anyBits[count] ? 1:0)<<(7 - (count%8)));
+    }
+    /*for(int count = 0; count < 8; count++){
         if(anyBits.at(7-count) == true){
             auxBytes += qPow(2, count);
         }
-    }
+    }*/
     qDebug() << "result:" << auxBytes.toHex();
     return auxBytes;
 }

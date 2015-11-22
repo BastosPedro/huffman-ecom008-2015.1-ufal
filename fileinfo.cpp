@@ -47,7 +47,7 @@ void fileinfo::setReferences()
     m_file = new QFile(m_path);
     Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There is no file");
     while(!m_file->atEnd()){
-        binaryFile += m_file->readLine(8000000);
+        binaryFile += m_file->read(8000000);
     }
 }
 
@@ -58,10 +58,11 @@ void fileinfo::setBitString(QVector<QString> vector)
          bitString += vector.value(binaryFile.at(count));
 
     }
-    qDebug() << "binaryfile: " << binaryFile;
+    //qDebug() << "binaryfile: " << binaryFile;
     if(bitString.size() % 8) {
          m_trash = 8 - (bitString.size() % 8);
     }
+    //bitString += (QString('0').repeated(m_trash));
 }
 
 void fileinfo::setPath(const QString &path)
