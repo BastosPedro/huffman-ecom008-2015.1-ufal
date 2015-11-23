@@ -1,13 +1,12 @@
 #ifndef TREE_H
 #define TREE_H
-
-#include "binarystuff.h"
+#include"fileinfo.h"
 #include "node.h"
 
 class tree
 {
     node* root;
-    QByteArray m_representation, auxRep, m_header;
+    QByteArray m_representation, m_header;
     QList<node*> m_list;
     QVector<QString> m_vector;
 

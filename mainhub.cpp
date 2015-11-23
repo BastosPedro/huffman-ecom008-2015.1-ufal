@@ -32,4 +32,12 @@ void mainHub::cCommand(QString path, QString out)
 void mainHub::dCommand(QString path, QString dir)
 {
     qDebug() << "We're still working here, please come back later.";
+    QTime temporis;
+    temporis.start();
+    fileinfo* dalenda = new fileinfo;
+    dalenda->setPath(path);
+    dalenda->setReferences();
+    dalenda->decodeHeader(dalenda->getBinaryFile());
+    //tree* carthago;
+
 }

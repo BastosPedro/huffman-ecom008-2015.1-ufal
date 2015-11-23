@@ -9,11 +9,6 @@ QByteArray binaryStuff::bittheByte(QBitArray anyBits)
     for(int count = 0; count < aux; count++){
         auxBytes[count/8] = (auxBytes.at(count/8)) | ((anyBits[count] ? 1:0)<<(7 - (count%8)));
     }
-    /*for(int count = 0; count < 8; count++){
-        if(anyBits.at(7-count) == true){
-            auxBytes += qPow(2, count);
-        }
-    }*/
     qDebug() << "result:" << auxBytes.toHex();
     return auxBytes;
 }
@@ -49,14 +44,15 @@ QByteArray binaryStuff::setHeaderString(QString anyString)
             auxBits.clearBit(county);
         }
     }
-    /*while(anyString.length()){
-        QString byte = anyString.left(8);
-        anyString.remove(0, 8);
-        //std::reverse(byte.begin(), byte.end());
-        char aux = byte.toInt(0, 2);
-        auxBytes.append(aux);
-    }*/
-    //std::reverse(auxBytes.begin(), auxBytes.end());
-    //qDebug() << "result:" << auxBytes;
     return auxBytes;
+}
+
+int binaryStuff::bitToString(QBitArray anyArray)
+{
+    int aux = anyArray.size();
+    int result = 0;
+    for(int countx = 0, county = aux - 1; countx < aux; countx++, county--){
+        result += anyArray.at(countx) * qPow(2, county);
+    }
+    return result;
 }

@@ -1,10 +1,5 @@
 #include "fileinfo.h"
 
-QString fileinfo::getPath() const
-{
-    return m_path;
-}
-
 fileinfo::fileinfo()
 {
     m_frequency = new int[256];
@@ -41,6 +36,27 @@ void fileinfo::deliverPackageC(QByteArray anyHeader, QString out){
     finalFile.open(QIODevice::WriteOnly);
     finalFile.write(anyHeader);
     finalFile.close();
+
+}
+
+void fileinfo::decodeHeader(QByteArray anyFile)
+{
+    QBitArray aux1 = binaryStuff::bytetheBit(anyFile);
+    QBitArray bitTrash(3);
+    bitTrash.setBit(0, aux1.at(0));
+    bitTrash.setBit(1, aux1.at(1));
+    bitTrash.setBit(2, aux1.at(2));
+    for(int count = 0; count < 3; count++){
+        aux1.clearBit(count);
+    }
+    QBitArray aux2 = binaryStuff::bytetheBit(anyFile);
+    aux1.resize(16);
+    for(int count = 0; count < 16; count++){
+        aux1.setBit(count, aux2.at(count - 8));
+    }
+    m_trash = binaryStuff::bitToString(bitTrash);
+    sizeTree = binaryStuff::bitToString(aux1);
+
 
 }
 
@@ -86,4 +102,12 @@ int fileinfo::getTrash() const
 QByteArray fileinfo::getBitString()
 {
     return bitString;
+}
+QString fileinfo::getPath() const
+{
+    return m_path;
+}
+QByteArray fileinfo::getBinaryFile()
+{
+    return binaryFile;
 }
