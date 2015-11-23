@@ -18,7 +18,7 @@ QBitArray binaryStuff::bytetheBit(QByteArray anyByte)
     QBitArray auxBits;
     auxBits.resize(anyByte.count()*8);
     for(int countx = 0; countx < anyByte.count(); countx++){
-        for(int county = 0; county < 8; county++){
+        for(int county = 0; county < 8; county){
             auxBits.setBit(countx*8+county, anyByte.at(countx) & (1<<(7-county)));
         }
     }

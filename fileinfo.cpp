@@ -2,10 +2,6 @@
 
 fileinfo::fileinfo()
 {
-    m_frequency = new int[256];
-    for(int count = 0; count < 256; count++) {
-        m_frequency[count] = 0;
-    }
     m_trash = 0;
     m_path = bitString = "";
 }
@@ -18,6 +14,10 @@ fileinfo::~fileinfo()
 void fileinfo::byteFrequency()
 {
     setReferences();
+    m_frequency = new int[256];
+    for(int count = 0; count < 256; count++) {
+        m_frequency[count] = 0;
+    }
     int size = binaryFile.size();
     for (int count = 0; count != size; count++) {
         m_frequency[uchar(binaryFile.at(count))]++;
@@ -39,7 +39,15 @@ void fileinfo::deliverPackageC(QByteArray anyHeader, QString out){
 
 }
 
-void fileinfo::decodeHeader(QByteArray anyFile)
+void fileinfo::deliverPackageD(QByteArray counterHeader, QString out)
+{
+    QFile finalFile(out);
+    finalFile.open(QIODevice::WriteOnly);
+    finalFile.write(counterHeader);
+    finalFile.close();
+}
+
+void fileinfo::getBin(QByteArray anyFile)
 {
     QBitArray aux1 = binaryStuff::bytetheBit(anyFile);
     QBitArray bitTrash(3);
@@ -58,6 +66,25 @@ void fileinfo::decodeHeader(QByteArray anyFile)
     sizeTree = binaryStuff::bitToString(aux1);
 
 
+}
+
+void fileinfo::decodeHeader()
+{
+    setReferences();
+    getBin(binaryFile.left(2));
+    sizeName = binaryFile.at(2);
+    binaryFile.remove(0,3);
+    fileName = binaryFile.left(sizeName);
+    binaryFile.remove(0, sizeName);
+    repTree = binaryFile.left(sizeTree);
+    binaryFile.remove(0, sizeTree);
+    codification.resize(binaryFile.size()*8 - m_trash);
+    codification.fill(0);
+    int aux = codification.size();
+    QBitArray auxArray = binaryStuff::bytetheBit(binaryFile);
+    for(int countx = 0; countx < aux; countx++){
+        codification.setBit(countx, auxArray.at(countx));
+    }
 }
 
 // Getters, Setters, etc //
@@ -110,4 +137,18 @@ QString fileinfo::getPath() const
 QByteArray fileinfo::getBinaryFile()
 {
     return binaryFile;
+}
+QByteArray fileinfo::getRepTree() const
+{
+    return repTree;
+}
+
+QBitArray fileinfo::getCodification() const
+{
+    return codification;
+}
+
+QString fileinfo::getFileName() const
+{
+    return fileName;
 }

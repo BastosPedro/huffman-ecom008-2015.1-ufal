@@ -31,13 +31,24 @@ void mainHub::cCommand(QString path, QString out)
 
 void mainHub::dCommand(QString path, QString dir)
 {
-    qDebug() << "We're still working here, please come back later.";
+
+    qDebug() << "Beginning decompression:" << endl;
+
     QTime temporis;
     temporis.start();
+
+    if(dir == ""){
+        dir = QFileInfo(path).absolutePath();
+    }
     fileinfo* dalenda = new fileinfo;
     dalenda->setPath(path);
-    dalenda->setReferences();
-    dalenda->decodeHeader(dalenda->getBinaryFile());
-    //tree* carthago;
+    dalenda->decodeHeader();
+    tree* carthago = new tree;
+    carthago->rebuildTree(dalenda->getRepTree());
+    //sQByteArray fileRes = tree::counterHeader(dalenda->getCodification(), tree::getRoot());
+    dalenda->deliverPackageD(carthago->counterHeader(dalenda->getCodification(), carthago->getRoot()),
+                             dir + "/" + dalenda->getFileName());
+
+    qDebug("\ntime: %d seconds", temporis.elapsed()/1000);
 
 }

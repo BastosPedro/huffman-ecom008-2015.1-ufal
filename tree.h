@@ -12,13 +12,16 @@ class tree
 
 public:
     tree(fileinfo*& anyFile);
+    tree();
     ~tree();
 
     static bool compare(node *x, node *y);
     void representation(node *anyNode);
     void toList(fileinfo*& anyFile);
-    void buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash);
     void toVector(const node* anyNode, QString temp = "");
+    void buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash);
+    node* rebuildTree(QByteArray anyRep);//decompression
+    QByteArray counterHeader(QBitArray anyArray, node* root);//decompression
 
     node* getRoot();
     QVector<QString> getVector();
