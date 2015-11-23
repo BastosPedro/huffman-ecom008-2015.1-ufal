@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     parser.process(app);
 
     if(parser.isSet(startGui)){
-        engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+        engine.load(QUrl(QStringLiteral("qrc:/gui.qml")));
     }
     else if(parser.isSet(compression) && parser.isSet(outName)){
         qDebug() << "Beginning compression.";

@@ -49,7 +49,7 @@ void fileinfo::deliverPackageD(QByteArray counterHeader, QString out)
 
 void fileinfo::getBin(QByteArray anyFile)
 {
-    QBitArray aux1 = binaryStuff::bytetheBit(anyFile);
+    QBitArray aux1 = binaryStuff::bytetheBit(anyFile.size(), anyFile);
     QBitArray bitTrash(3);
     bitTrash.setBit(0, aux1.at(0));
     bitTrash.setBit(1, aux1.at(1));
@@ -57,7 +57,7 @@ void fileinfo::getBin(QByteArray anyFile)
     for(int count = 0; count < 3; count++){
         aux1.clearBit(count);
     }
-    QBitArray aux2 = binaryStuff::bytetheBit(anyFile);
+    QBitArray aux2 = binaryStuff::bytetheBit(anyFile.size(), anyFile);
     aux1.resize(16);
     for(int count = 0; count < 16; count++){
         aux1.setBit(count, aux2.at(count - 8));
@@ -80,11 +80,8 @@ void fileinfo::decodeHeader()
     binaryFile.remove(0, sizeTree);
     codification.resize(binaryFile.size()*8 - m_trash);
     codification.fill(0);
-    int aux = codification.size();
-    QBitArray auxArray = binaryStuff::bytetheBit(binaryFile);
-    for(int countx = 0; countx < aux; countx++){
-        codification.setBit(countx, auxArray.at(countx));
-    }
+    //int aux = codification.size();
+    codification = binaryStuff::bytetheBit(binaryFile.size(), binaryFile);
 }
 
 // Getters, Setters, etc //

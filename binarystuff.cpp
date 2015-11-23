@@ -13,16 +13,14 @@ QByteArray binaryStuff::bittheByte(QBitArray anyBits)
     return auxBytes;
 }
 
-QBitArray binaryStuff::bytetheBit(QByteArray anyByte)
+QBitArray binaryStuff::bytetheBit(int pos, QByteArray anyByte)
 {
     QBitArray auxBits;
-    auxBits.resize(anyByte.count()*8);
-    for(int countx = 0; countx < anyByte.count(); countx++){
-        for(int county = 0; county < 8; county){
-            auxBits.setBit(countx*8+county, anyByte.at(countx) & (1<<(7-county)));
+    for(int countx = 0; countx < pos; countx++){
+        for(int county = 0; county < 8; county++){
+            auxBits[county] = (anyByte.at(countx) & (0x1 << (7-county)));
         }
     }
-    //qDebug() << "result:" << auxBits;
     return auxBits;
 }
 
