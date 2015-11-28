@@ -42,12 +42,11 @@ void mainHub::dCommand(QString path, QString dir)
     }
     fileinfo* dalenda = new fileinfo;
     dalenda->setPath(path);
-    dalenda->decodeHeader();
+    dalenda->decodeHeader(path, dir);
     tree* carthago = new tree;
     carthago->rebuildTree(dalenda->getRepTree());
-    //sQByteArray fileRes = tree::counterHeader(dalenda->getCodification(), tree::getRoot());
-    dalenda->deliverPackageD(carthago->counterHeader(dalenda->getCodification(), carthago->getRoot()),
-                             dir + "/" + dalenda->getFileName());
+    carthago->decodeTheCode(dalenda->getBinaryFile(), dalenda->getTrash());
+    //dalenda->deliverPackageD(carthago->counterHeader(dalenda->getCodification(), carthago->getRoot()), dir + "/" + dalenda->getFileName());
 
     qDebug("\ntime: %d seconds", temporis.elapsed()/1000);
 

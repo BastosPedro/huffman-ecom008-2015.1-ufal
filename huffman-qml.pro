@@ -6,10 +6,10 @@ CONFIG += c++11
 SOURCES += main.cpp \
     node.cpp \
     tree.cpp \
-    fileinfo.cpp \
     printer.cpp \
     binarystuff.cpp \
-    mainhub.cpp
+    mainhub.cpp \
+    fileinfo.cpp
 
 RESOURCES += qml.qrc
 

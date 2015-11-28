@@ -6,6 +6,8 @@
 
 int main(int argc, char *argv[]) {
 
+    QTime temporis;
+
     QApplication app(argc, argv);
     QApplication::setApplicationName("Huffman - Pedro Bastos");
     QApplication::setApplicationVersion("1.0");
@@ -43,29 +45,30 @@ int main(int argc, char *argv[]) {
         engine.load(QUrl(QStringLiteral("qrc:/gui.qml")));
     }
     else if(parser.isSet(compression) && parser.isSet(outName)){
-        qDebug() << "Beginning compression.";
+        temporis.start();
         mainHub::cCommand(parser.value(compression), parser.value(outName));
-        qDebug() << "Complete.";
+        qDebug("Complete: %d seconds", temporis.elapsed()/1000);
     }
     else if(parser.isSet(compression)){
-        qDebug() << "Beginning compression.";
+        temporis.start();
         mainHub::cCommand(parser.value(compression));
-        qDebug() << "Complete.";
+        qDebug("Complete: %d seconds", temporis.elapsed()/1000);
     }
     else{
        if(app.arguments().size() == 1){
            qDebug() << qPrintable(parser.helpText());
        }
        else if(parser.isSet(local)){
-           qDebug() << "Beginning decompression.";
+           temporis.start();
            mainHub::dCommand(app.arguments().at(1), parser.value(local));
-           qDebug() << "Complete.";
+           qDebug("Complete: %d seconds", temporis.elapsed()/1000);
        }
        else{
-           qDebug() << "Beginning decompression.";
+           temporis.start();
            mainHub::dCommand(app.arguments().at(1));
-           qDebug() << "Complete.";
+           qDebug("Complete: %d seconds", temporis.elapsed()/1000);
        }
     }
-    return app.exec();
+    //return app.exec();
+    return 0;
 }

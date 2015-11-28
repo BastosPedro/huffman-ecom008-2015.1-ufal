@@ -114,55 +114,43 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
     qDebug() << endl << "after all" << endl << m_header.toHex();
 }
 
+//the methods below are used in the decompression
+
 node *tree::rebuildTree(QByteArray anyRep)
 {
     root = new node('*');
-    QStack <node*> stack;
-    int size = anyRep.size();
-    for(int count = size-1; count > 0; count--){
-        uchar current = anyRep.at(count);
+    QStack<node*> auxStack;
+    int repSize = anyRep.size();
+    for(int count = repSize -1; count > 0; count--){
+        uchar curr = anyRep.at(count);
         if(anyRep.at(count-1) == '!' && anyRep.at(count-2) != '!'){
-            stack.push(new node(current, 0, 0, 0));
+            auxStack.push(new node(curr, 0, 0, 0));
             count -=1;
-            qDebug() << anyRep.mid(count-1,2);
+            qDebug() << anyRep.mid(count - 1, 2) << endl;
         }
-        else if(current == '*'){
-            node* aux = new node('*');
-            aux->setBoth(stack.pop(), stack.pop());
-            stack.push(aux);
+        else if(curr == '*'){
+            node* auxNode = new node('*');
+            auxNode->setBoth(auxStack.pop(), auxStack.pop());
+            auxStack.push(auxNode);
         }
         else{
-            stack.push(new node(current, 0, 0, 0));
+            auxStack.push(new node(curr, 0, 0, 0));
         }
     }
-    while(stack.size()>1){
-        node* aux = new node('*');
-        aux->setBoth(stack.pop(), stack.pop());
-        stack.push(aux);
+    while(auxStack.size() > 1){
+        node* auxNode = new node('*');
+        auxNode->setBoth(auxStack.pop(), auxStack.pop());
+        auxStack.push(auxNode);
     }
-    root = stack.pop();
-    qDebug() << "stack size:" << stack.size();
+    root = auxStack.pop();
+    qDebug() << "auxStack size:" << auxStack.size();
     return root;
 }
 
-QByteArray tree::counterHeader(QBitArray anyArray, node *root)
+void tree::decodeTheCode(QByteArray anyFile, int anyTrash)
 {
-    QByteArray restored;
-    node* current = root;
-    int aux = anyArray.size();
-    for(int count = 0; count < aux ; count++){
-        if(anyArray.at(count)){
-            current = current->getRightchild();
-        }
-        else{
-            current = current->getLeftchild();
-        }
-        if(current->isLeaf()){
-            restored += current->getSymbol();
-            current = root;
-        }
-    }
-    return restored;
+    decoded = binaryStuff::bytetheBit(anyFile.size(), anyFile);
+    decoded.resize(decoded.size() - anyTrash);
 }
 
 // Getters, Setters, etc //

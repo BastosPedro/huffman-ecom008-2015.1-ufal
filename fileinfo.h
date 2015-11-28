@@ -10,7 +10,6 @@ class fileinfo
     QString m_path, path_out, fileName;
     QFile* m_file;
     QByteArray binaryFile, bitString, repTree;
-    QBitArray codification;
 public:
 
     fileinfo();
@@ -31,9 +30,7 @@ public:
     void deliverPackageD(QByteArray counterHeader, QString out);
 
 //the methods below are exclusive to the decompression
-    void getBin(QByteArray anyFile);
-    void decodeHeader();
-    QBitArray getCodification() const;
+    void decodeHeader(QString path, QString out);
     QString getFileName() const;
 };
 

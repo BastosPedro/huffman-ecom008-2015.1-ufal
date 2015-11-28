@@ -9,7 +9,7 @@ class tree
     QByteArray m_representation, m_header;
     QList<node*> m_list;
     QVector<QString> m_vector;
-
+    QVector<bool> decoded;
 public:
     tree(fileinfo*& anyFile);
     tree();
@@ -21,7 +21,7 @@ public:
     void toVector(const node* anyNode, QString temp = "");
     void buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash);
     node* rebuildTree(QByteArray anyRep);//decompression
-    QByteArray counterHeader(QBitArray anyArray, node* root);//decompression
+    void decodeTheCode(QByteArray anyFile, int anyTrash);//decompression
 
     node* getRoot();
     QVector<QString> getVector();

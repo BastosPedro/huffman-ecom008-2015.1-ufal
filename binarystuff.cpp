@@ -13,12 +13,12 @@ QByteArray binaryStuff::bittheByte(QBitArray anyBits)
     return auxBytes;
 }
 
-QBitArray binaryStuff::bytetheBit(int pos, QByteArray anyByte)
+QVector<bool> binaryStuff::bytetheBit(int pos, QByteArray anyByte)
 {
-    QBitArray auxBits;
+    QVector<bool> auxBits;
     for(int countx = 0; countx < pos; countx++){
         for(int county = 0; county < 8; county++){
-            auxBits[county] = (anyByte.at(countx) & (0x1 << (7-county)));
+            auxBits += (anyByte.at(countx) & (0x1 << (7-county)));
         }
     }
     return auxBits;
@@ -39,13 +39,13 @@ QByteArray binaryStuff::setHeaderString(QString anyString)
             auxBits.setBit(county);
         }
         else{
-            auxBits.clearBit(county);
+            auxBits.setBit(county, 0);
         }
     }
     return auxBytes;
 }
 
-int binaryStuff::bitToString(QBitArray anyArray)
+int binaryStuff::bitToInt(QBitArray anyArray)
 {
     int aux = anyArray.size();
     int result = 0;

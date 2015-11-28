@@ -47,30 +47,51 @@ void fileinfo::deliverPackageD(QByteArray counterHeader, QString out)
     finalFile.close();
 }
 
-void fileinfo::getBin(QByteArray anyFile)
+void fileinfo::decodeHeader(QString path, QString out)
 {
-    QBitArray aux1 = binaryStuff::bytetheBit(anyFile.size(), anyFile);
-    QBitArray bitTrash(3);
-    bitTrash.setBit(0, aux1.at(0));
-    bitTrash.setBit(1, aux1.at(1));
-    bitTrash.setBit(2, aux1.at(2));
-    for(int count = 0; count < 3; count++){
-        aux1.clearBit(count);
+    m_path = path;
+    path_out = out;
+    quint16 auxBytes = 0;
+    QFile file(path);
+    if(file.open(QIODevice::ReadOnly)){
+        QDataStream auxStream(&file);
+        auxStream >> auxBytes;
+        quint8 auxTrash = 0;
+        if(auxBytes & (1<<13)){
+            auxTrash+= 1;
+        }
+        if(auxBytes & (1<<14)){
+            auxTrash+= 2;
+        }
+        if(auxBytes & (1<<15)){
+            auxTrash+= 4;
+        }
+        auxBytes ^= (-0 ^ auxBytes) & (1<<13);
+        auxBytes ^= (-0 ^ auxBytes) & (1<<14);
+        auxBytes ^= (-0 ^ auxBytes) & (1<<15);
+
+        quint8 auxNSize;
+        auxStream >> auxNSize;
+        file.seek(3);
+        QString auxFName;
+        auxFName.resize(auxNSize);
+        auxFName = file.read(auxNSize);
+        file.seek(auxNSize + 3);
+        QByteArray auxRep;
+        auxRep.resize(auxBytes);
+        auxRep = file.read(auxBytes);
+
+        m_trash = auxTrash;
+        sizeTree = auxBytes;
+        sizeName = auxNSize;
+        fileName = auxFName;
+        repTree = auxRep;
+        bool flag = file.seek(3 + sizeTree + sizeName);
+        if(flag) binaryFile = file.readAll();
+        else qDebug() << "a problem has occurred";
+        file.close();
     }
-    QBitArray aux2 = binaryStuff::bytetheBit(anyFile.size(), anyFile);
-    aux1.resize(16);
-    for(int count = 0; count < 16; count++){
-        aux1.setBit(count, aux2.at(count - 8));
-    }
-    m_trash = binaryStuff::bitToString(bitTrash);
-    sizeTree = binaryStuff::bitToString(aux1);
-
-
-}
-
-void fileinfo::decodeHeader()
-{
-    setReferences();
+    /*setReferences();
     getBin(binaryFile.left(2));
     sizeName = binaryFile.at(2);
     binaryFile.remove(0,3);
@@ -78,10 +99,12 @@ void fileinfo::decodeHeader()
     binaryFile.remove(0, sizeName);
     repTree = binaryFile.left(sizeTree);
     binaryFile.remove(0, sizeTree);
-    codification.resize(binaryFile.size()*8 - m_trash);
-    codification.fill(0);
+    //codification.resize(binaryFile.size()*8 - m_trash);
+    //codification.fill(0);
     //int aux = codification.size();
-    codification = binaryStuff::bytetheBit(binaryFile.size(), binaryFile);
+    int aux = binaryFile.size();
+    codification = binaryStuff::bytetheBit(aux - 1, binaryFile);
+    codification.resize(aux*8 - m_trash);*/
 }
 
 // Getters, Setters, etc //
@@ -92,6 +115,7 @@ void fileinfo::setReferences()
     while(!m_file->atEnd()){
         binaryFile += m_file->read(8000000);
     }
+    m_file->close();
 }
 
 void fileinfo::setBitString(QVector<QString> vector)
@@ -139,12 +163,6 @@ QByteArray fileinfo::getRepTree() const
 {
     return repTree;
 }
-
-QBitArray fileinfo::getCodification() const
-{
-    return codification;
-}
-
 QString fileinfo::getFileName() const
 {
     return fileName;

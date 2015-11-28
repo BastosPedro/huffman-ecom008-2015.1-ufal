@@ -12,22 +12,9 @@ Window {
 
     id: mainwindow
     visible: true
-    width: mm(200)
-    height: mm(200)
-
-    LinearGradient{
-        id: linearGradient
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-        anchors.left: parent.left
-        start:Qt.point(0,0);
-        end:Qt.point(0,200)
-        gradient: Gradient{
-            GradientStop {position: 0.0; color: "white"}
-            GradientStop {position: 1.0; color: "lightsteelblue"}
-        }
-    }
+    width: mm(150)
+    height: mm(150)
+    color: "white"
     Row{
         Rectangle{
             id:menu
