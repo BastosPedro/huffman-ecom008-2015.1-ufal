@@ -1,6 +1,7 @@
 #ifndef FILEINFO_H
 #define FILEINFO_H
 
+#include<iostream>
 #include"binarystuff.h"
 
 class fileinfo
@@ -30,7 +31,8 @@ public:
     void deliverPackageD(QByteArray counterHeader, QString out);
 
 //the methods below are exclusive to the decompression
-    void decodeHeader(QString path, QString out);
+    void decodeHeader(QString path);
+    //void getBin(QByteArray anyArray);
     QString getFileName() const;
 };
 

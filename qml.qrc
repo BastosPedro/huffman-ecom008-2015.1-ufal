@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>gui.qml</file>
+        <file>assets/giraffe.png</file>
     </qresource>
 </RCC>

@@ -9,7 +9,7 @@ QByteArray binaryStuff::bittheByte(QBitArray anyBits)
     for(int count = 0; count < aux; count++){
         auxBytes[count/8] = (auxBytes.at(count/8)) | ((anyBits[count] ? 1:0)<<(7 - (count%8)));
     }
-    qDebug() << "result:" << auxBytes.toHex();
+    //qDebug() << "result:" << auxBytes.toHex();
     return auxBytes;
 }
 

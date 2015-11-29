@@ -118,33 +118,31 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
 
 node *tree::rebuildTree(QByteArray anyRep)
 {
-    root = new node('*');
-    QStack<node*> auxStack;
-    int repSize = anyRep.size();
-    for(int count = repSize -1; count > 0; count--){
-        uchar curr = anyRep.at(count);
-        if(anyRep.at(count-1) == '!' && anyRep.at(count-2) != '!'){
-            auxStack.push(new node(curr, 0, 0, 0));
-            count -=1;
-            qDebug() << anyRep.mid(count - 1, 2) << endl;
+    if(anyRep != ""){
+        uchar curr = anyRep.at(0);
+        if(curr == '*'){
+            qDebug() << "current node:" << curr;
+            anyRep.remove(0,1);
+            node* temp = new node(curr, 0,
+                                rebuildTree(anyRep),
+                                rebuildTree(anyRep));
+            //rebuildTree(anyRep);
         }
-        else if(curr == '*'){
-            node* auxNode = new node('*');
-            auxNode->setBoth(auxStack.pop(), auxStack.pop());
-            auxStack.push(auxNode);
+        else if(curr == '!'){
+            qDebug() << "current node:" << curr;
+            anyRep.remove(0,1);
+            node* temp = new node(anyRep.at(1), 0,
+                                rebuildTree(anyRep),
+                                rebuildTree(anyRep));
         }
         else{
-            auxStack.push(new node(curr, 0, 0, 0));
+            qDebug() << "current node:" << curr;
+            anyRep.remove(0,1);
+            node* temp = new node(curr, 0, 0, 0);
         }
     }
-    while(auxStack.size() > 1){
-        node* auxNode = new node('*');
-        auxNode->setBoth(auxStack.pop(), auxStack.pop());
-        auxStack.push(auxNode);
-    }
-    root = auxStack.pop();
-    qDebug() << "auxStack size:" << auxStack.size();
-    return root;
+        //root->setBoth(anyRep.at(0), anyRep.at(1));
+        qDebug() << "tree rebuilt";
 }
 
 void tree::decodeTheCode(QByteArray anyFile, int anyTrash)

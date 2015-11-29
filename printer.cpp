@@ -62,7 +62,7 @@ void printer::printTree(node *anyNode, int level)
 void printer::printAll(tree* anyTree, node* anyNode, fileinfo*& anyFile)
 {
     printList(anyTree);
-    printVector(anyTree);
+    //printVector(anyTree);
     printRepresentation(anyTree);
     printFrequency(anyFile);
     printTree(anyNode);

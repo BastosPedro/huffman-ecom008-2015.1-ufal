@@ -4,7 +4,7 @@ mainHub::mainHub(QObject *parent) : QObject(parent) {}
 
 void mainHub::cCommand(QString path, QString out)
 {
-    qDebug() << "Beginning compression:" << endl;
+    std::cout << "Beginning compression:\n";
     QTime temporis;
     temporis.start();
 
@@ -18,7 +18,7 @@ void mainHub::cCommand(QString path, QString out)
     invicta->representation(invicta->getRoot());
 
     roma->setBitString(invicta->getVector());
-    qDebug() << "trash size:" << roma->getTrash();
+    std::cout << "trash size:" << roma->getTrash() << "\n";
 
     printer::printAll(invicta, invicta->getRoot(), roma);
     printer::printRepresentation(invicta);
@@ -26,13 +26,13 @@ void mainHub::cCommand(QString path, QString out)
     invicta->buildHeader(roma->getPath(), roma->getBitString(), roma->getTrash());
     roma->deliverPackageC(invicta->getHeader(), out);
 
-    qDebug("\ntime: %d seconds", temporis.elapsed()/1000);
+    std::cout << "Complete:" << temporis.elapsed()/1000 << " seconds\n";
 }
 
 void mainHub::dCommand(QString path, QString dir)
 {
 
-    qDebug() << "Beginning decompression:" << endl;
+    std::cout << "Beginning decompression:" << endl;
 
     QTime temporis;
     temporis.start();
@@ -42,12 +42,12 @@ void mainHub::dCommand(QString path, QString dir)
     }
     fileinfo* dalenda = new fileinfo;
     dalenda->setPath(path);
-    dalenda->decodeHeader(path, dir);
+    dalenda->decodeHeader(path);
     tree* carthago = new tree;
     carthago->rebuildTree(dalenda->getRepTree());
     carthago->decodeTheCode(dalenda->getBinaryFile(), dalenda->getTrash());
     //dalenda->deliverPackageD(carthago->counterHeader(dalenda->getCodification(), carthago->getRoot()), dir + "/" + dalenda->getFileName());
 
-    qDebug("\ntime: %d seconds", temporis.elapsed()/1000);
+    std::cout << "Complete:" << temporis.elapsed()/1000 << " seconds";
 
 }

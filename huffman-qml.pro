@@ -2,6 +2,7 @@ TEMPLATE = app
 
 QT += qml quick widgets
 CONFIG += c++11
+CONFIG += console
 
 SOURCES += main.cpp \
     node.cpp \
@@ -26,4 +27,6 @@ HEADERS += \
     printer.h \
     binarystuff.h \
     mainhub.h
+
+DISTFILES +=
 

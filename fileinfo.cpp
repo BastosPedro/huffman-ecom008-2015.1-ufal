@@ -47,50 +47,57 @@ void fileinfo::deliverPackageD(QByteArray counterHeader, QString out)
     finalFile.close();
 }
 
-void fileinfo::decodeHeader(QString path, QString out)
+void fileinfo::decodeHeader(QString path)
 {
+    std::cout << "beginning decoding";
     m_path = path;
-    path_out = out;
+    //path_out = out;
     quint16 auxBytes = 0;
-    QFile file(path);
-    if(file.open(QIODevice::ReadOnly)){
-        QDataStream auxStream(&file);
-        auxStream >> auxBytes;
-        quint8 auxTrash = 0;
-        if(auxBytes & (1<<13)){
-            auxTrash+= 1;
-        }
-        if(auxBytes & (1<<14)){
-            auxTrash+= 2;
-        }
-        if(auxBytes & (1<<15)){
-            auxTrash+= 4;
-        }
-        auxBytes ^= (-0 ^ auxBytes) & (1<<13);
-        auxBytes ^= (-0 ^ auxBytes) & (1<<14);
-        auxBytes ^= (-0 ^ auxBytes) & (1<<15);
-
-        quint8 auxNSize;
-        auxStream >> auxNSize;
-        file.seek(3);
-        QString auxFName;
-        auxFName.resize(auxNSize);
-        auxFName = file.read(auxNSize);
-        file.seek(auxNSize + 3);
-        QByteArray auxRep;
-        auxRep.resize(auxBytes);
-        auxRep = file.read(auxBytes);
-
-        m_trash = auxTrash;
-        sizeTree = auxBytes;
-        sizeName = auxNSize;
-        fileName = auxFName;
-        repTree = auxRep;
-        bool flag = file.seek(3 + sizeTree + sizeName);
-        if(flag) binaryFile = file.readAll();
-        else qDebug() << "a problem has occurred";
-        file.close();
+    m_file = new QFile(m_path);
+    Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There is no file");
+    //if(m_file->open(QIODevice::ReadOnly)){
+    QDataStream auxStream(m_file);
+    auxStream >> auxBytes;
+    quint8 auxTrash = 0;
+    if(auxBytes & (1<<13)){
+        auxTrash+= 1;
     }
+    if(auxBytes & (1<<14)){
+        auxTrash+= 2;
+    }
+    if(auxBytes & (1<<15)){
+        auxTrash+= 4;
+    }
+    auxBytes ^= (-0 ^ auxBytes) & (1<<13);
+    auxBytes ^= (-0 ^ auxBytes) & (1<<14);
+    auxBytes ^= (-0 ^ auxBytes) & (1<<15);
+
+    quint8 auxNSize;
+    auxStream >> auxNSize;
+    m_file->seek(3);
+    QString auxFName;
+    auxFName.resize(auxNSize);
+    auxFName = m_file->read(auxNSize);
+    m_file->seek(auxNSize + 3);
+    QByteArray auxRep;
+    auxRep.resize(auxBytes);
+    auxRep = m_file->read(auxBytes);
+
+    m_trash = auxTrash;
+    qDebug() << "trash size:" << m_trash;
+    sizeTree = auxBytes;
+    qDebug() << "tree size:" << sizeTree;
+    sizeName = auxNSize;
+    qDebug() << "name size:" << sizeName;
+    fileName = auxFName;
+    qDebug() << "file name:" << fileName;
+    repTree = auxRep;
+    qDebug() << "representation" << repTree;
+    bool flag = m_file->seek(3 + sizeTree + sizeName);
+    if(flag) binaryFile = m_file->readAll();
+    else qDebug() << "a problem has occurred";
+    m_file->close();
+
     /*setReferences();
     getBin(binaryFile.left(2));
     sizeName = binaryFile.at(2);
@@ -99,13 +106,14 @@ void fileinfo::decodeHeader(QString path, QString out)
     binaryFile.remove(0, sizeName);
     repTree = binaryFile.left(sizeTree);
     binaryFile.remove(0, sizeTree);
-    //codification.resize(binaryFile.size()*8 - m_trash);
-    //codification.fill(0);
-    //int aux = codification.size();
+    codification.resize(binaryFile.size()*8 - m_trash);
+    codification.fill(0);
+    int aux = codification.size();
     int aux = binaryFile.size();
     codification = binaryStuff::bytetheBit(aux - 1, binaryFile);
     codification.resize(aux*8 - m_trash);*/
 }
+
 
 // Getters, Setters, etc //
 void fileinfo::setReferences()

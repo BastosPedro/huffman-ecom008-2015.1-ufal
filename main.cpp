@@ -9,8 +9,8 @@ int main(int argc, char *argv[]) {
     QTime temporis;
 
     QApplication app(argc, argv);
-    QApplication::setApplicationName("Huffman - Pedro Bastos");
-    QApplication::setApplicationVersion("1.0");
+    QApplication::setApplicationName("Huffman huffman = new huffman(huffman)");
+    QApplication::setApplicationVersion("0.5");
 
     QQmlApplicationEngine engine;
     QQmlContext *interpreter = engine.rootContext();
@@ -47,28 +47,70 @@ int main(int argc, char *argv[]) {
     else if(parser.isSet(compression) && parser.isSet(outName)){
         temporis.start();
         mainHub::cCommand(parser.value(compression), parser.value(outName));
-        qDebug("Complete: %d seconds", temporis.elapsed()/1000);
     }
     else if(parser.isSet(compression)){
         temporis.start();
         mainHub::cCommand(parser.value(compression));
-        qDebug("Complete: %d seconds", temporis.elapsed()/1000);
     }
     else{
        if(app.arguments().size() == 1){
            qDebug() << qPrintable(parser.helpText());
        }
        else if(parser.isSet(local)){
-           temporis.start();
            mainHub::dCommand(app.arguments().at(1), parser.value(local));
-           qDebug("Complete: %d seconds", temporis.elapsed()/1000);
        }
        else{
-           temporis.start();
            mainHub::dCommand(app.arguments().at(1));
-           qDebug("Complete: %d seconds", temporis.elapsed()/1000);
+
        }
     }
-    //return app.exec();
-    return 0;
+    return app.exec();
+    //return 0;
 }
+
+/*int main(){
+    qDebug() << "Beginning compression:\n";
+    QTime temporis;
+    temporis.start();
+
+    fileinfo* roma = new fileinfo;
+    roma->setPath("/home/pedro/Documents/samples/whatever.bmp");
+    roma->byteFrequency();
+
+    tree* invicta = new tree(roma);
+
+    invicta->toVector(invicta->getRoot());
+    invicta->representation(invicta->getRoot());
+
+    roma->setBitString(invicta->getVector());
+    qDebug() << "trash size:" << roma->getTrash() << "\n";
+
+    printer::printAll(invicta, invicta->getRoot(), roma);
+    printer::printRepresentation(invicta);
+
+    invicta->buildHeader(roma->getPath(), roma->getBitString(), roma->getTrash());
+    roma->deliverPackageC(invicta->getHeader(), "/home/pedro/Documents/samples/whatever.bmp");
+
+    qDebug() << "Complete:" << temporis.elapsed()/1000 << " seconds\n";
+    return 0;
+}*/
+/*int main(){
+    qDebug() << "Beginning descompression:" << endl;
+
+    QTime temporis;
+    temporis.start();
+
+    //if(dir == ""){
+    //    dir = QFileInfo(path).absolutePath();
+    //}
+    fileinfo* delenda = new fileinfo;
+    //dalenda->setPath("/home/pedro/Documents/samples/stardardascii.huff");
+    delenda->decodeHeader("/home/pedroDocuments/samples/whatever.huff");
+    tree* carthago = new tree;
+    carthago->rebuildTree(dalenda->getRepTree());
+    carthago->decodeTheCode(dalenda->getBinaryFile(), dalenda->getTrash());
+    //dalenda->deliverPackageD();
+
+    qDebug() << "Complete:" << temporis.elapsed()/1000 << " seconds";
+    return 0;
+}*/
