@@ -64,15 +64,28 @@ Window {
                     anchors.centerIn: parent
 
                     FileDialog{
-                        id:browser
+                        id:browserI
                         folder:shortcuts.home
                         title: "Choose your file."
                         onAccepted: {
-                            path.text = (browser.fileUrl)
-                            browser.close
+                            input.text = (browserI.fileUrl); input.text = input.text.replace("file://", "")
+                            browserI.close
                         }
                         onRejected: {
-                            browser.close
+                            browserI.close
+                        }
+                    }
+                    FileDialog{
+                        id:browserO
+                        folder:shortcuts.home
+                        selectFolder: true
+                        title: "Choose your file."
+                        onAccepted: {
+                            output.text = (browserO.fileUrl); output.text = output.text.replace("file://", "")
+                            browserO.close
+                        }
+                        onRejected: {
+                            browserO.close
                         }
                     }
                     TextField{
@@ -89,24 +102,37 @@ Window {
                         id: buttons
                         Button{
                             id: compress
-                            text: "Compress"
-                        }
-                        Button{
-                            id: decompress
-                            text: "Decompress"
-                        }
-                        Button{
-                            id: openbrowserC
-                            text: "Browse Input"
+                            text: "Begin!"
                             onClicked: {
-                                browser.open()
+                                if(decompress.flag){
+                                    //decompression not complete
+                                }
+                                else{
+                                    _huffman.cCommand(input.text, output.text)
+                                }
                             }
                         }
                         Button{
-                            id: openbrowserD
+                            id: decompress
+                            checkable: true
+                            text: "Decompress?"
+                            property bool flag: false
+                            onClicked:{
+                                flag = true
+                            }
+                        }
+                        Button{
+                            id: openbrowserI
+                            text: "Browse Input"
+                            onClicked: {
+                                browserI.open()
+                            }
+                        }
+                        Button{
+                            id: openbrowserO
                             text: "Browse Output"
                             onClicked: {
-                                browser.open()
+                                browserO.open()
                             }
                         }
                     }
