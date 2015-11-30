@@ -4,7 +4,7 @@
 #include "mainhub.h"
 
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
 
     QTime temporis;
 
@@ -66,15 +66,15 @@ int main(int argc, char *argv[]) {
     }
     return app.exec();
     //return 0;
-}
+}*/
 
-/*int main(){
+int main(){
     qDebug() << "Beginning compression:\n";
     QTime temporis;
     temporis.start();
 
     fileinfo* roma = new fileinfo;
-    roma->setPath("/home/pedro/Documents/samples/whatever.bmp");
+    roma->setPath("/home/pedro/Documents/samples/test.txt");
     roma->byteFrequency();
 
     tree* invicta = new tree(roma);
@@ -89,11 +89,11 @@ int main(int argc, char *argv[]) {
     printer::printRepresentation(invicta);
 
     invicta->buildHeader(roma->getPath(), roma->getBitString(), roma->getTrash());
-    roma->deliverPackageC(invicta->getHeader(), "/home/pedro/Documents/samples/whatever.bmp");
+    roma->deliverPackageC(invicta->getHeader(), "/home/pedro/Documents/samples/test.huff");
 
     qDebug() << "Complete:" << temporis.elapsed()/1000 << " seconds\n";
     return 0;
-}*/
+}
 /*int main(){
     qDebug() << "Beginning descompression:" << endl;
 

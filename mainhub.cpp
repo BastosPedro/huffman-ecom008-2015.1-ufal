@@ -46,7 +46,7 @@ void mainHub::dCommand(QString path, QString dir)
     tree* carthago = new tree;
     carthago->rebuildTree(dalenda->getRepTree());
     carthago->decodeTheCode(dalenda->getBinaryFile(), dalenda->getTrash());
-    //dalenda->deliverPackageD(carthago->counterHeader(dalenda->getCodification(), carthago->getRoot()), dir + "/" + dalenda->getFileName());
+    //dalenda->deliverPackageD();
 
     std::cout << "Complete:" << temporis.elapsed()/1000 << " seconds";
 

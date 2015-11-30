@@ -97,9 +97,9 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
     }
     qDebug() << endl << "trash, treelength, namelength, binlength:" << endl
              << trash << treeLength << nameFile.length() << anyCodification.length() << endl;
-    m_header.append(binaryStuff::setHeaderString(trash));
+    m_header += binaryStuff::setHeaderString(trash);
     qDebug() << "after trash:" << endl << m_header.toHex();
-    m_header.append(binaryStuff::setHeaderString(treeLength));
+    m_header += binaryStuff::setHeaderString(treeLength);
     qDebug() << "after treeLength" << endl << m_header.toHex();
     m_header += nameFile.length();
     qDebug() << "after nameLength" << endl << m_header.toHex();

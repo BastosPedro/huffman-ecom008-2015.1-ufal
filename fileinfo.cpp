@@ -97,21 +97,6 @@ void fileinfo::decodeHeader(QString path)
     if(flag) binaryFile = m_file->readAll();
     else qDebug() << "a problem has occurred";
     m_file->close();
-
-    /*setReferences();
-    getBin(binaryFile.left(2));
-    sizeName = binaryFile.at(2);
-    binaryFile.remove(0,3);
-    fileName = binaryFile.left(sizeName);
-    binaryFile.remove(0, sizeName);
-    repTree = binaryFile.left(sizeTree);
-    binaryFile.remove(0, sizeTree);
-    codification.resize(binaryFile.size()*8 - m_trash);
-    codification.fill(0);
-    int aux = codification.size();
-    int aux = binaryFile.size();
-    codification = binaryStuff::bytetheBit(aux - 1, binaryFile);
-    codification.resize(aux*8 - m_trash);*/
 }
 
 
@@ -135,7 +120,8 @@ void fileinfo::setBitString(QVector<QString> vector)
     }
     //qDebug() << "binaryfile: " << binaryFile;
     if(bitString.size() % 8) {
-         m_trash = 8 - (bitString.size() % 8);
+         m_trash = (8 - (bitString.size() % 8));
+         qDebug() << "first trash size I guess:" << m_trash;
     }
     //bitString += (QString('0').repeated(m_trash));
 }
