@@ -54,7 +54,7 @@ void fileinfo::decodeHeader(QString path)
     //path_out = out;
     quint16 auxBytes = 0;
     m_file = new QFile(m_path);
-    Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There is no file");
+    Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There was a problem when reading the file");
     //if(m_file->open(QIODevice::ReadOnly)){
     QDataStream auxStream(m_file);
     auxStream >> auxBytes;
@@ -115,15 +115,16 @@ void fileinfo::setBitString(QVector<QString> vector)
 {
     int aux = binaryFile.size();
     for(int count = 0; count < aux; count++) {
-         bitString += vector.value(binaryFile.at(count));
-
+        bitString.append(vector.value(binaryFile.at(count)));
+        qDebug() << "added to bit string:" << qPrintable(vector.value(binaryFile.at(count)));
     }
-    //qDebug() << "binaryfile: " << binaryFile;
+    qDebug() << "bitString final:" << bitString;
     if(bitString.size() % 8) {
-         m_trash = (8 - (bitString.size() % 8));
-         qDebug() << "first trash size I guess:" << m_trash;
+         m_trash = 8 - (bitString.size() % 8);
+         qDebug() << "first trash size" << m_trash;
     }
-    //bitString += (QString('0').repeated(m_trash));
+    bitString.append(QString('0').repeated(m_trash));
+    qDebug() << "bitString after trash:" << bitString;
 }
 
 void fileinfo::setPath(const QString &path)

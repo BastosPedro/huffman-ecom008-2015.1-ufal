@@ -4,7 +4,9 @@ tree::tree(fileinfo*& anyFile)
 {
     root = 0;
     toList(anyFile);
-
+    //m_vector = QVector<QString>(256,"");
+    m_vector.clear();
+    m_vector.resize(256);
     Q_ASSERT_X(m_list.length() >= 2, Q_FUNC_INFO, "Cannot build this tree :(");
 
     while(m_list.length() > 2){
@@ -49,11 +51,10 @@ void tree::toList(fileinfo*& anyFile){
 void tree::toVector(const node* anyNode, QString temp)
 {
     Q_ASSERT_X(root, Q_FUNC_INFO, "Cannot use this tree.");
-    //QVector<QString> anyVector(256);
-    m_vector.resize(256);
 
     if(anyNode->isLeaf()){
-        m_vector.insert(anyNode->getSymbol(), temp);
+        //m_vector.insert(anyNode->getSymbol(), temp);
+        m_vector[(quint8(anyNode->getSymbol()))] = temp;
         qDebug() << "node" << anyNode->getSymbol() << "\nAddded with coding:" << qPrintable(temp);
     }
     else{
@@ -62,6 +63,7 @@ void tree::toVector(const node* anyNode, QString temp)
         temp.chop(1);
         temp += '1';
         toVector(anyNode->getRightchild(), temp);
+        temp.chop(1);
     }
 }
 
@@ -97,10 +99,8 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
     }
     qDebug() << endl << "trash, treelength, namelength, binlength:" << endl
              << trash << treeLength << nameFile.length() << anyCodification.length() << endl;
-    m_header += binaryStuff::setHeaderString(trash);
-    qDebug() << "after trash:" << endl << m_header.toHex();
-    m_header += binaryStuff::setHeaderString(treeLength);
-    qDebug() << "after treeLength" << endl << m_header.toHex();
+    m_header += binaryStuff::setHeaderString(trash + treeLength);
+    qDebug() << "after trash&treeLength:" << endl << m_header.toHex();
     m_header += nameFile.length();
     qDebug() << "after nameLength" << endl << m_header.toHex();
     m_header += nameFile;
@@ -109,16 +109,14 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
     qDebug() << "after representation" << endl << m_header.toHex();
     m_header += binaryStuff::setHeaderString(anyCodification);
     qDebug() << "after codification" << endl << m_header.toHex();
-    m_header += binaryStuff::setHeaderString(QString('0').repeated(anyTrash));
-    qDebug() << "after trash";
-    qDebug() << endl << "after all" << endl << m_header.toHex();
+    //qDebug() << endl << "after all" << endl << m_header.toHex();
 }
 
 //the methods below are used in the decompression
 
 node *tree::rebuildTree(QByteArray anyRep)
 {
-    if(anyRep != ""){
+ /*   if(anyRep != ""){
         uchar curr = anyRep.at(0);
         if(curr == '*'){
             qDebug() << "current node:" << curr;
@@ -142,7 +140,7 @@ node *tree::rebuildTree(QByteArray anyRep)
         }
     }
         //root->setBoth(anyRep.at(0), anyRep.at(1));
-        qDebug() << "tree rebuilt";
+        qDebug() << "tree rebuilt";*/
 }
 
 void tree::decodeTheCode(QByteArray anyFile, int anyTrash)

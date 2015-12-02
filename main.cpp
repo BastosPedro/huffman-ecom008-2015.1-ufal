@@ -17,7 +17,7 @@
     mainHub huffman(&app);
     interpreter->setContextProperty("_huffman", &huffman);
     QCommandLineParser parser;
-    parser.addHelpOption();
+    parser.addelpOption();
     parser.addVersionOption();
     parser.setApplicationDescription("These are the huffman parsers.");
     parser.addPositionalArgument("in-file.x", QCoreApplication::translate("main", "Your file will be compressed."));
@@ -80,10 +80,8 @@ int main(){
     tree* invicta = new tree(roma);
 
     invicta->toVector(invicta->getRoot());
-    invicta->representation(invicta->getRoot());
-
     roma->setBitString(invicta->getVector());
-    qDebug() << "trash size:" << roma->getTrash() << "\n";
+    invicta->representation(invicta->getRoot());
 
     printer::printAll(invicta, invicta->getRoot(), roma);
     printer::printRepresentation(invicta);

@@ -27,9 +27,9 @@ QVector<bool> binaryStuff::bytetheBit(int pos, QByteArray anyByte)
 QByteArray binaryStuff::setHeaderString(QString anyString)
 {
     QByteArray auxBytes;
-    QBitArray auxBits(8);
-    int aux = anyString.length();
-    //qDebug() << "whatever" << aux;
+    //QBitArray auxBits(8);
+    //int count = anyString.length();
+    /*//qDebug() << "whatever" << aux;
     for(int countx = 0, county = 0; countx < aux; countx++, county++){
         if(county == 7){
             county = 0;
@@ -41,6 +41,12 @@ QByteArray binaryStuff::setHeaderString(QString anyString)
         else{
             auxBits.setBit(county, 0);
         }
+    }*/
+    while(anyString.length()){
+        QString aux = anyString.left(8);
+        anyString.remove(0, 8);
+        char auxY = aux.toInt(0,2);
+        auxBytes.append(auxY);
     }
     return auxBytes;
 }
