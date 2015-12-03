@@ -11,6 +11,7 @@ class fileinfo
     QString m_path, path_out, fileName;
     QFile* m_file;
     QByteArray binaryFile, bitString, repTree;
+    QVector<bool> auxBits, bitsFile;
 public:
 
     fileinfo();

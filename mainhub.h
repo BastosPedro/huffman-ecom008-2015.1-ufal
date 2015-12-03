@@ -7,8 +7,10 @@
 
 class mainHub : public QObject
 {
+    Q_OBJECT
 public:
-    mainHub(QObject *parent = 0);
+    explicit mainHub(QObject *parent = 0);
+    ~mainHub();
     Q_INVOKABLE static void cCommand(QString path, QString out = "");
     Q_INVOKABLE static void dCommand(QString path, QString dir = "");
 };

@@ -9,8 +9,8 @@ SOURCES += main.cpp \
     tree.cpp \
     printer.cpp \
     binarystuff.cpp \
-    mainhub.cpp \
-    fileinfo.cpp
+    fileinfo.cpp \
+    hub.cpp
 
 RESOURCES += qml.qrc
 
@@ -26,7 +26,7 @@ HEADERS += \
     fileinfo.h \
     printer.h \
     binarystuff.h \
-    mainhub.h
+    hub.h
 
 DISTFILES +=
 

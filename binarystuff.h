@@ -7,7 +7,7 @@ class binaryStuff
 {
 public:
     static QByteArray bittheByte(QBitArray anyBits);
-    static QVector<bool> bytetheBit(int pos, QByteArray anyByte);
+    static QVector<bool> bytetheBit(quint8 anyByte);
     static QByteArray setHeaderString(QString anyArray);
     static int bitToInt(QBitArray anyArray);
 };

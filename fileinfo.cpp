@@ -93,8 +93,18 @@ void fileinfo::decodeHeader(QString path)
     qDebug() << "file name:" << fileName;
     repTree = auxRep;
     qDebug() << "representation" << repTree;
+
     bool flag = m_file->seek(3 + sizeTree + sizeName);
-    if(flag) binaryFile = m_file->readAll();
+    if(flag){
+        while(!m_file->atEnd()){
+                QByteArray auxLine = m_file->read(1024);
+                int lineSize = auxLine.size();
+                for(int count = 0; count < lineSize; count++){
+                    auxBits = binaryStuff::bytetheBit(auxLine.at(count));
+                    bitsFile += auxBits;
+                }
+            }
+        }
     else qDebug() << "a problem has occurred";
     m_file->close();
 }

@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "mainhub.h"
+#include "hub.h"
 
 
 /*int main(int argc, char *argv[]) {
@@ -14,10 +14,10 @@
 
     QQmlApplicationEngine engine;
     QQmlContext *interpreter = engine.rootContext();
-    mainHub huffman(&app);
+    hub huffman(&app);
     interpreter->setContextProperty("_huffman", &huffman);
     QCommandLineParser parser;
-    parser.addelpOption();
+    parser.addHelpOption();
     parser.addVersionOption();
     parser.setApplicationDescription("These are the huffman parsers.");
     parser.addPositionalArgument("in-file.x", QCoreApplication::translate("main", "Your file will be compressed."));
@@ -46,21 +46,21 @@
     }
     else if(parser.isSet(compression) && parser.isSet(outName)){
         temporis.start();
-        mainHub::cCommand(parser.value(compression), parser.value(outName));
+        hub::cCommand(parser.value(compression), parser.value(outName));
     }
     else if(parser.isSet(compression)){
         temporis.start();
-        mainHub::cCommand(parser.value(compression));
+        hub::cCommand(parser.value(compression));
     }
     else{
        if(app.arguments().size() == 1){
            qDebug() << qPrintable(parser.helpText());
        }
        else if(parser.isSet(local)){
-           mainHub::dCommand(app.arguments().at(1), parser.value(local));
+           hub::dCommand(app.arguments().at(1), parser.value(local));
        }
        else{
-           mainHub::dCommand(app.arguments().at(1));
+           hub::dCommand(app.arguments().at(1));
 
        }
     }
@@ -68,13 +68,13 @@
     //return 0;
 }*/
 
-int main(){
+/*int main(){
     qDebug() << "Beginning compression:\n";
     QTime temporis;
     temporis.start();
 
     fileinfo* roma = new fileinfo;
-    roma->setPath("/home/pedro/Documents/samples/test.txt");
+    roma->setPath("/home/pedro/Documents/samples/whatever.bmp");
     roma->byteFrequency();
 
     tree* invicta = new tree(roma);
@@ -87,28 +87,35 @@ int main(){
     printer::printRepresentation(invicta);
 
     invicta->buildHeader(roma->getPath(), roma->getBitString(), roma->getTrash());
-    roma->deliverPackageC(invicta->getHeader(), "/home/pedro/Documents/samples/test.huff");
+    roma->deliverPackageC(invicta->getHeader(), "/home/pedro/Documents/samples/qbosta.huff");
 
     qDebug() << "Complete:" << temporis.elapsed()/1000 << " seconds\n";
     return 0;
-}
-/*int main(){
-    qDebug() << "Beginning descompression:" << endl;
-
-    QTime temporis;
-    temporis.start();
-
-    //if(dir == ""){
-    //    dir = QFileInfo(path).absolutePath();
-    //}
-    fileinfo* delenda = new fileinfo;
-    //dalenda->setPath("/home/pedro/Documents/samples/stardardascii.huff");
-    delenda->decodeHeader("/home/pedroDocuments/samples/whatever.huff");
-    tree* carthago = new tree;
-    carthago->rebuildTree(dalenda->getRepTree());
-    carthago->decodeTheCode(dalenda->getBinaryFile(), dalenda->getTrash());
-    //dalenda->deliverPackageD();
-
-    qDebug() << "Complete:" << temporis.elapsed()/1000 << " seconds";
-    return 0;
 }*/
+int main(){
+    QString path = "/home/pedro/Documents/samples/test.huff";
+    QString dir = "";
+    if(path.contains(".huff")){
+        std::cout << "Beginning decompression:\n";
+
+        QTime temporis;
+        temporis.start();
+
+        if(dir == ""){
+            dir = QFileInfo(path).absolutePath();
+        }
+        fileinfo* dalenda = new fileinfo;
+        dalenda->setPath(path);
+        dalenda->decodeHeader(path);
+        tree* carthago = new tree(dalenda->getRepTree());
+        //carthago->rebuildTree(tree::m_representation.size());
+        //carthago->decodeTheCode(dalenda->getBinaryFile(), dalenda->getTrash());
+        //dalenda->deliverPackageD();
+
+        std::cout << "Complete:" << temporis.elapsed()/1000 << " seconds";
+    }
+    else{
+        std::cout << "Wrong file, please insert a .huff one.";
+    }
+    return 0;
+}

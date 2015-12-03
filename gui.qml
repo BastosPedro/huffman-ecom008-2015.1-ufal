@@ -32,15 +32,6 @@ Window {
                 anchors.fill: parent
                 anchors.margins: 10
                 Text{
-                    id: title
-                    text: "HUFFMAN"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font{
-                        bold: true
-                        pixelSize: 35
-                    }
-                }
-                Text{
                     id: author
                     text: "by pedro bastos"
                     anchors.bottom:parent.bottom
@@ -78,14 +69,23 @@ Window {
                     FileDialog{
                         id:browserO
                         folder:shortcuts.home
-                        selectFolder: true
-                        title: "Choose your file."
+                        //selectFolder: true
+                        title: "Choose your target."
                         onAccepted: {
                             output.text = (browserO.fileUrl); output.text = output.text.replace("file://", "")
                             browserO.close
                         }
                         onRejected: {
                             browserO.close
+                        }
+                    }
+                    Text{
+                        id: title
+                        text: "Huffman"
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        font{
+                            bold: true
+                            pixelSize: 35
                         }
                     }
                     TextField{
@@ -102,24 +102,14 @@ Window {
                         id: buttons
                         Button{
                             id: compress
-                            text: "Begin!"
+                            text: "Compress"
                             onClicked: {
-                                if(decompress.flag){
-                                    //decompression not complete
-                                }
-                                else{
-                                    _huffman.cCommand(input.text, output.text)
-                                }
+                                _huffman.cCommand(input.text, output.txt)
                             }
                         }
                         Button{
                             id: decompress
-                            checkable: true
-                            text: "Decompress?"
-                            property bool flag: false
-                            onClicked:{
-                                flag = true
-                            }
+                            text: "Decompress"
                         }
                         Button{
                             id: openbrowserI

@@ -12,7 +12,7 @@ class tree
     QVector<bool> decoded;
 public:
     tree(fileinfo*& anyFile);
-    tree();
+    tree(QByteArray anyArray);
     ~tree();
 
     static bool compare(node *x, node *y);
@@ -20,7 +20,7 @@ public:
     void toList(fileinfo*& anyFile);
     void toVector(const node* anyNode, QString temp = "");
     void buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash);
-    node* rebuildTree(QByteArray anyRep);//decompression
+    node* rebuildTree(int size);//decompression
     void decodeTheCode(QByteArray anyFile, int anyTrash);//decompression
 
     node* getRoot();

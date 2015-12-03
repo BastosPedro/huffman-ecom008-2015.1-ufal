@@ -1,12 +1,20 @@
 #include "mainhub.h"
 
-mainHub::mainHub(QObject *parent) : QObject(parent) {}
+mainHub::mainHub(QObject *parent) : QObject(parent)
+{
+
+}
+
+mainHub::~mainHub()
+{
+
+}
 
 void mainHub::cCommand(QString path, QString out)
 {
     std::cout << "Beginning compression:\n";
     QTime temporis;
-    temporis.start();
+    temporis.start();;
 
     fileinfo* roma = new fileinfo;
     roma->setPath(path);
@@ -15,10 +23,8 @@ void mainHub::cCommand(QString path, QString out)
     tree* invicta = new tree(roma);
 
     invicta->toVector(invicta->getRoot());
-    invicta->representation(invicta->getRoot());
-
     roma->setBitString(invicta->getVector());
-    std::cout << "trash size:" << roma->getTrash() << "\n";
+    invicta->representation(invicta->getRoot());
 
     printer::printAll(invicta, invicta->getRoot(), roma);
     printer::printRepresentation(invicta);

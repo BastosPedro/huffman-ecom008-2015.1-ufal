@@ -28,15 +28,15 @@ tree::tree(fileinfo*& anyFile)
     }
 }
 
-tree::tree()
+tree::tree(QByteArray anyArray)
 {
-
+    root = NULL;
+    m_representation = anyArray;
+    root = rebuildTree(m_representation.size());
+    qDebug() << "tree rebuilt";
 }
 
-tree::~tree()
-{
-
-}
+tree::~tree() {}
 
 void tree::toList(fileinfo*& anyFile){
     for(int count = 0; count < 256; count++) {
@@ -114,38 +114,33 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
 
 //the methods below are used in the decompression
 
-node *tree::rebuildTree(QByteArray anyRep)
+node *tree::rebuildTree(int size)
 {
- /*   if(anyRep != ""){
-        uchar curr = anyRep.at(0);
-        if(curr == '*'){
-            qDebug() << "current node:" << curr;
-            anyRep.remove(0,1);
-            node* temp = new node(curr, 0,
-                                rebuildTree(anyRep),
-                                rebuildTree(anyRep));
-            //rebuildTree(anyRep);
-        }
-        else if(curr == '!'){
-            qDebug() << "current node:" << curr;
-            anyRep.remove(0,1);
-            node* temp = new node(anyRep.at(1), 0,
-                                rebuildTree(anyRep),
-                                rebuildTree(anyRep));
-        }
-        else{
-            qDebug() << "current node:" << curr;
-            anyRep.remove(0,1);
-            node* temp = new node(curr, 0, 0, 0);
-        }
+    uchar curr = m_representation.at(0);
+    m_representation.remove(0, 1);
+    if(curr == '*'){
+        qDebug() << "added:" << curr << endl;
+        return new node(0, rebuildTree(size+1)->getRepetition() +
+                           rebuildTree(size+1)->getRepetition(),
+                           rebuildTree(size+1), rebuildTree(size+1));
     }
-        //root->setBoth(anyRep.at(0), anyRep.at(1));
-        qDebug() << "tree rebuilt";*/
+    else{
+        if(curr == '!'){
+            curr = m_representation.at(0);
+            m_representation.remove(0, 1);
+        }
+        qDebug() << "added:" << curr << endl;
+        return new node(curr, 0, 0, 0);
+    }
 }
+
 
 void tree::decodeTheCode(QByteArray anyFile, int anyTrash)
 {
-    decoded = binaryStuff::bytetheBit(anyFile.size(), anyFile);
+    int aux = anyFile.size();
+    for(int count = 0; count < aux; count++){
+
+    }
     decoded.resize(decoded.size() - anyTrash);
 }
 
