@@ -6,7 +6,7 @@
 
 /*int main(int argc, char *argv[]) {
 
-    QTime temporis;
+    QTime timer;
 
     QApplication app(argc, argv);
     QApplication::setApplicationName("Huffman huffman = new huffman(huffman)");
@@ -45,11 +45,11 @@
         engine.load(QUrl(QStringLiteral("qrc:/gui.qml")));
     }
     else if(parser.isSet(compression) && parser.isSet(outName)){
-        temporis.start();
+        timer.start();
         hub::cCommand(parser.value(compression), parser.value(outName));
     }
     else if(parser.isSet(compression)){
-        temporis.start();
+        timer.start();
         hub::cCommand(parser.value(compression));
     }
     else{
@@ -70,8 +70,8 @@
 
 /*int main(){
     qDebug() << "Beginning compression:\n";
-    QTime temporis;
-    temporis.start();
+    QTime timer;
+    timer.start();
 
     fileinfo* roma = new fileinfo;
     roma->setPath("/home/pedro/Documents/samples/whatever.bmp");
@@ -89,7 +89,7 @@
     invicta->buildHeader(roma->getPath(), roma->getBitString(), roma->getTrash());
     roma->deliverPackageC(invicta->getHeader(), "/home/pedro/Documents/samples/qbosta.huff");
 
-    qDebug() << "Complete:" << temporis.elapsed()/1000 << " seconds\n";
+    qDebug() << "Complete:" << timer.elapsed()/1000 << " seconds\n";
     return 0;
 }*/
 int main(){
@@ -98,21 +98,20 @@ int main(){
     if(path.contains(".huff")){
         std::cout << "Beginning decompression:\n";
 
-        QTime temporis;
-        temporis.start();
+        QTime timer;
+        timer.start();
 
         if(dir == ""){
             dir = QFileInfo(path).absolutePath();
         }
-        fileinfo* dalenda = new fileinfo;
-        dalenda->setPath(path);
-        dalenda->decodeHeader(path);
-        tree* carthago = new tree(dalenda->getRepTree());
-        //carthago->rebuildTree(tree::m_representation.size());
-        //carthago->decodeTheCode(dalenda->getBinaryFile(), dalenda->getTrash());
-        //dalenda->deliverPackageD();
+        fileinfo* delenda = new fileinfo;
+        delenda->setPath(path);
+        delenda->decodeHeader(path);
+        tree* cartago = new tree(delenda->getRepTree());
+        cartago->decodeTheCode(delenda->getBinaryFile(), delenda->getTrash());
+        //delenda->deliverPackageD();
 
-        std::cout << "Complete:" << temporis.elapsed()/1000 << " seconds";
+        std::cout << "Complete:" << timer.elapsed()/1000 << " seconds";
     }
     else{
         std::cout << "Wrong file, please insert a .huff one.";

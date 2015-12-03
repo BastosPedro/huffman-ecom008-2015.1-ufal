@@ -32,7 +32,7 @@ tree::tree(QByteArray anyArray)
 {
     root = NULL;
     m_representation = anyArray;
-    root = rebuildTree(m_representation.size());
+    root = rebuildTree();
     qDebug() << "tree rebuilt";
 }
 
@@ -109,28 +109,29 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
     qDebug() << "after representation" << endl << m_header.toHex();
     m_header += binaryStuff::setHeaderString(anyCodification);
     qDebug() << "after codification" << endl << m_header.toHex();
-    //qDebug() << endl << "after all" << endl << m_header.toHex();
 }
 
 //the methods below are used in the decompression
 
 node *tree::rebuildTree(int size)
 {
-    uchar curr = m_representation.at(0);
-    m_representation.remove(0, 1);
-    if(curr == '*'){
-        qDebug() << "added:" << curr << endl;
-        return new node(0, rebuildTree(size+1)->getRepetition() +
-                           rebuildTree(size+1)->getRepetition(),
-                           rebuildTree(size+1), rebuildTree(size+1));
-    }
-    else{
-        if(curr == '!'){
-            curr = m_representation.at(0);
-            m_representation.remove(0, 1);
+    if(m_representation != ""){
+        uchar curr = m_representation.at(0);
+        m_representation.remove(0, 1);
+        if(curr == '*'){
+            qDebug() << "added:" << curr << endl;
+            return new node(0, rebuildTree(size+1)->getRepetition() +
+                               rebuildTree(size+1)->getRepetition(),
+                               rebuildTree(size+1), rebuildTree(size+1));
         }
-        qDebug() << "added:" << curr << endl;
-        return new node(curr, 0, 0, 0);
+        else{
+            if(curr == '!'){
+                curr = m_representation.at(0);
+                m_representation.remove(0, 1);
+            }
+            qDebug() << "added:" << curr << endl;
+            return new node(curr, 0, 0, 0);
+        }
     }
 }
 

@@ -20,7 +20,7 @@ public:
     void toList(fileinfo*& anyFile);
     void toVector(const node* anyNode, QString temp = "");
     void buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash);
-    node* rebuildTree(int size);//decompression
+    node* rebuildTree(int size = 0);//decompression
     void decodeTheCode(QByteArray anyFile, int anyTrash);//decompression
 
     node* getRoot();
