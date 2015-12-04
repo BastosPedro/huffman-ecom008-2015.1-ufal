@@ -67,8 +67,8 @@ int main(int argc, char *argv[]) {
 
        }
     }
-    return app.exec();
-    //return 0;
+    //return app.exec();
+    return 0;
 }
 
 /*int main(){
