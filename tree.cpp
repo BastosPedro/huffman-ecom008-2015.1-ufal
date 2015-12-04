@@ -4,19 +4,18 @@ tree::tree(fileinfo*& anyFile)
 {
     root = 0;
     toList(anyFile);
-    //m_vector = QVector<QString>(256,"");
-    m_vector.clear();
-    m_vector.resize(256);
-    Q_ASSERT_X(m_list.length() >= 2, Q_FUNC_INFO, "Cannot build this tree :(");
+    m_vector = QVector<QString>(256,"");
+    Q_ASSERT_X(!m_list.isEmpty(), Q_FUNC_INFO, "Cannot build this tree :(");
+    qint64 listSize = m_list.size();
 
-    while(m_list.length() > 2){
+    /*while(m_list.length() > 2){
         node* temp = new node(0,  m_list.at(0)->getRepetition()
                                 + m_list.at(1)->getRepetition(),
                                   m_list.at(0), m_list.at(1));
         temp->setBoth(m_list.at(0), m_list.at(1));
         m_list.removeFirst();
         m_list.removeFirst();
-        m_list.insert(0, temp);
+        m_list.prepend(temp);
         qSort(m_list.begin(), m_list.end(), compare);
     }
     if(m_list.length() == 2){
@@ -25,15 +24,31 @@ tree::tree(fileinfo*& anyFile)
                             m_list.at(0), m_list.at(1));
         root->setBoth(m_list.at(0), m_list.at(1));
         qDebug() << "- Succesfully built tree :)";
+    }*/
+
+    while(listSize > 1)
+    {
+        qSort(m_list.begin(), m_list.end(), compare);
+        node * temp = new node('*', m_list.at(0)->getRepetition()
+                                  + m_list.at(1)->getRepetition(),
+                                    m_list.at(0), m_list.at(1));
+
+        m_list.removeFirst();
+        m_list.removeFirst();
+        m_list.prepend(temp);
+        --listSize;
     }
+
+    root = m_list.at(0);
 }
 
 tree::tree(QByteArray anyArray)
 {
     root = NULL;
     m_representation = anyArray;
+
     qDebug() << endl << "rebuilding tree:";
-    root = rebuildTree();
+    root = rebuildTree(0);
 }
 
 tree::~tree() {}
@@ -59,15 +74,21 @@ void tree::toVector(const node* anyNode, QString temp)
 
 void tree::representation(node *anyNode)
 {
-   if(anyNode != 0){
+   if(anyNode){
        if(anyNode->isLeaf()){
-           if((uchar(anyNode->getSymbol() == '*')) || (uchar (anyNode->getSymbol() == '!'))){
+           uchar symbolNode = anyNode->getSymbol();
+
+           if((symbolNode == '*') | (symbolNode == '!')){
                 m_representation += '!';
             }
-            m_representation += anyNode->getSymbol();
+
+           m_representation += symbolNode;
+           return;
         }
+
         else{
             m_representation += '*';
+
             representation(anyNode->getLeftchild());
             representation(anyNode->getRightchild());
         }
@@ -81,29 +102,31 @@ void tree::buildHeader(QString anyPath, QByteArray anyCodification, int anyTrash
     QString trash = QString::number(anyTrash, 2);
     QString treeLength = QString::number(m_representation.size(), 2);
     QString nameFile = QFileInfo(anyPath).fileName();
+    QString nameLength = QString::number(nameFile.size(), 2);
     if(trash.length() < 3){
         trash.prepend(QString('0').repeated(3-trash.length()));
     }
     if(treeLength.length() < 13){
         treeLength.prepend(QString('0').repeated(13-treeLength.length()));
     }
+    if(nameLength.length() < 8){
+        nameLength.prepend(QString('0').repeated(8-nameLength.length()));
+    }
     qDebug() << endl << "trash, treelength, namelength, binlength:" << endl
-             << trash << treeLength << nameFile.length() << anyCodification.length() << endl;
-    m_header += binaryStuff::setHeaderString(trash + treeLength);
-    qDebug() << "after trash&treeLength:" << endl << m_header.toHex();
-    m_header += nameFile.length();
-    qDebug() << "after nameLength" << endl << m_header.toHex();
-    m_header += nameFile;
+             << trash << treeLength << nameLength << anyCodification.length() << endl;
+    m_header += binaryStuff::setHeaderString(trash + treeLength + nameLength);
+    qDebug() << "after trash, tree & nameLength:" << endl << m_header.toHex();
+    m_header += nameFile.toLocal8Bit();
     qDebug() << "after nameFile" << endl << m_header.toHex();
     m_header += m_representation;
-    qDebug() << "after representation" << endl << m_header.toHex();
+    //qDebug() << "after representation" << endl << m_header.toHex();
     m_header += binaryStuff::setHeaderString(anyCodification);
-    qDebug() << "after codification" << endl << m_header.toHex();
+    //qDebug() << "after codification" << endl << m_header.toHex();
 }
 
 //the methods below are used in the decompression
 
-node *tree::rebuildTree(int size)
+node* tree::rebuildTree(int size)
 {
     if(m_representation != ""){
         uchar curr = m_representation.at(0);
@@ -122,6 +145,49 @@ node *tree::rebuildTree(int size)
         }
     }
     else return NULL;
+
+    /*if(current)
+    {
+        if(m_representation.isEmpty())
+            return;
+        else
+        {
+            uchar holderChar = m_representation[0];
+
+            if(holderChar == '!')
+            {
+                holderChar = (uchar (m_representation[1]));
+                current->setSymbol(holderChar);
+                current->setRepetition(1);
+                current->setBoth(0,0);
+                m_representation.remove(0,2);
+                return;
+            }
+            else if(holderChar == '*')
+            {
+                current->setSymbol(holderChar);
+                current->setRepetition(0);
+                current->setBoth((new node()),(new node()));
+
+                node *subTree = current->getLeftchild();
+
+                rebuildTree(subTree);
+                subTree = current->getRightchild();
+                rebuildTree(subTree);
+
+                m_representation.remove(0,1);
+                return;
+            }
+            else
+            {
+                current->setSymbol(holderChar);
+                current->setRepetition(1);
+                current->setBoth(0,0);
+                m_representation.remove(0,1);
+                return;
+            }
+        }
+    }*/
 }
 
 
@@ -192,5 +258,5 @@ void tree::toList(fileinfo*& anyFile){
             m_list.append(temp);
         }
     }
-    qSort(m_list.begin(), m_list.end(), compare);
+    //qSort(m_list.begin(), m_list.end(), compare);
 }

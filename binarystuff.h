@@ -9,6 +9,7 @@ public:
     static QByteArray bittheByte(QBitArray anyBits);
     static QVector<bool> bytetheBit(quint8 anyByte);
     static QByteArray setHeaderString(QString anyArray);
+    static QByteArray setHeaderString(QByteArray &anyArray);
     static int bitToInt(QBitArray anyArray);
 };
 

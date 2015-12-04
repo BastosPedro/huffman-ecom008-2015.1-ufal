@@ -2,9 +2,12 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "hub.h"
+#define compTest ("/home/pedro/Documents/samples/whatever.bmp")
+#define compOut ("/home/pedro/Documents/samples/dudewut.huff")
+#define decompDir ("")
 
 
-/*int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 
     QTime timer;
 
@@ -66,15 +69,15 @@
     }
     return app.exec();
     //return 0;
-}*/
+}
 
-int main(){
+/*int main(){
     qDebug() << "Beginning compression:\n";
     QTime timer;
     timer.start();
 
     fileinfo* roma = new fileinfo;
-    roma->setPath("/home/pedro/Documents/samples/standardascii");
+    roma->setPath(compTest);
     roma->byteFrequency();
 
     tree* invicta = new tree(roma);
@@ -87,14 +90,15 @@ int main(){
     printer::printRepresentation(invicta);
 
     invicta->buildHeader(roma->getPath(), roma->getBitString(), roma->getTrash());
-    roma->deliverPackageC(invicta->getHeader(), "/home/pedro/Documents/samples/qbosta.huff");
+    roma->deliverPackageC(invicta->getHeader(), compOut);
 
     qDebug() << "Complete:" << timer.elapsed()/1000 << " seconds\n";
     return 0;
-}
+}*/
+
 /*int main(){
-    QString path = "/home/pedro/Documents/samples/whatever.huff";
-    QString dir = "";
+    QString path = compOut;
+    QString dir = decompDir;
     if(path.contains(".huff")){
         std::cout << "Beginning decompression:\n";
 

@@ -2,12 +2,12 @@
 
 QByteArray binaryStuff::bittheByte(QBitArray anyBits)
 {
-    int aux = anyBits.count();
-    QByteArray auxBytes;
-    auxBytes.resize(aux/8);
-    auxBytes.fill(0);
-    for(int count = 0; count < aux; count++){
-        auxBytes[count/8] = (auxBytes.at(count/8)) | ((anyBits[count] ? 1:0)<<(7 - (count%8)));
+    quint64 aux = anyBits.count();
+    QByteArray auxBytes = QByteArray(aux/8,'\0');
+//    auxBytes.resize(aux/8);
+//    auxBytes.fill(0);
+    for(quint64 count = 0; count < aux; ++count){
+        auxBytes[(int (count/8))] = ((auxBytes.at(count/8)) | ((anyBits.testBit(count)?1:0)<<(7 - (count%8))));
     }
     //qDebug() << "result:" << auxBytes.toHex();
     return auxBytes;
@@ -35,11 +35,12 @@ QVector<bool> binaryStuff::bytetheBit(quint8 anyByte)
 
 QByteArray binaryStuff::setHeaderString(QString anyString)
 {
-    QByteArray auxBytes;
-    QBitArray auxBits(8);
-    int aux = anyString.length();
+    quint64 aux = anyString.length();
+    QBitArray anyBits = QBitArray(aux);
     //qDebug() << "whatever" << aux;
-    for(int countx = 0, county = 0; countx < aux; countx++, county++){
+
+    /*for(int countx = 0, county = 0; countx < aux; countx++, county++){
+
         if(county == 7){
             county = 0;
             auxBytes += bittheByte(auxBits);
@@ -50,14 +51,35 @@ QByteArray binaryStuff::setHeaderString(QString anyString)
         else{
             auxBits.setBit(county, 0);
         }
-    }
+    }*/
+
     /*while(anyString.length()){
         QString aux = anyString.left(8);
         anyString.remove(0, 8);
         char auxY = aux.toInt(0,2);
         auxBytes.append(auxY);
     }*/
-    return auxBytes;
+
+    for(quint64 count = 0; count < aux; ++count)
+    {
+        anyBits.setBit(count,(anyString.at(count) == '1'));
+    }
+
+
+    return bittheByte(anyBits);
+}
+
+QByteArray binaryStuff::setHeaderString(QByteArray &anyArray)
+{
+    quint64 aux = anyArray.size();
+    QBitArray anyBits = QBitArray(aux);
+
+    for(quint64 count = 0; count < aux; ++count)
+    {
+        anyBits.setBit(count, (anyArray.at(count) == '1'));
+    }
+
+    return bittheByte(anyBits);
 }
 
 int binaryStuff::bitToInt(QBitArray anyArray)

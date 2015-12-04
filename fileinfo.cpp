@@ -53,7 +53,7 @@ void fileinfo::deliverPackageD(QByteArray counterHeader)
         path_out.append(fileName);
     }
     else{
-        path_out.append(fileName);
+        path_out.append('/'+fileName);
     }
     QFile finalFile(path_out);
     finalFile.open(QIODevice::WriteOnly);
@@ -138,16 +138,16 @@ void fileinfo::setBitString(QVector<QString> vector)
 {
     int aux = binaryFile.size();
     for(int count = 0; count < aux; count++) {
-        bitString.append(vector.value(binaryFile.at(count)));
-        qDebug() << "added to bit string:" << qPrintable(vector.value(binaryFile.at(count)));
+        bitString.append(vector.value((quint8 (binaryFile.at(count)))));
+        //qDebug() << "added to bit string:" << qPrintable(vector.value(binaryFile.at(count)));
     }
-    qDebug() << "bitString final:" << bitString;
+    //qDebug() << "bitString final:" << bitString;
     if(bitString.size() % 8) {
          m_trash = 8 - (bitString.size() % 8);
-         qDebug() << "first trash size" << m_trash;
+         //qDebug() << "first trash size" << m_trash;
     }
     bitString.append(QString('0').repeated(m_trash));
-    qDebug() << "bitString after trash:" << bitString;
+    //qDebug() << "bitString after trash:" << bitString;
 }
 
 void fileinfo::setPath(const QString &path)

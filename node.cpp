@@ -39,8 +39,7 @@ void node::setRepetition(int repetition)
 
 bool node::isLeaf() const
 {
-    if(m_leftchild == 0 && m_rightchild == 0) return true;
-    else return false;
+    return ((m_leftchild == 0) & (m_rightchild == 0));
 }
 
 node::node(unsigned char symbol, int repetition, node *leftchild, node *rightchild)
@@ -58,6 +57,13 @@ node::node(node* leftchild, node* rightchild)
     m_leftchild = leftchild;
     m_rightchild = rightchild;
     m_repetition = leftchild->getRepetition() + rightchild->getRepetition();
+}
+
+node::node()
+{
+    setSymbol('\0');
+    setRepetition(0);
+    setBoth(0,0);
 }
 
 node::~node()
