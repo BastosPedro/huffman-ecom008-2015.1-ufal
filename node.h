@@ -11,7 +11,7 @@ class node
 
 public:
     node(unsigned char symbol, int repetition, node* leftchild, node* rightchild);
-    node(unsigned char a);
+    node(node *leftchild, node *rightchild);
     ~node();
 
     node *getLeftchild() const;

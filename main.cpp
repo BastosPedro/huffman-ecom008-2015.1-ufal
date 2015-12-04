@@ -68,13 +68,13 @@
     //return 0;
 }*/
 
-/*int main(){
+int main(){
     qDebug() << "Beginning compression:\n";
     QTime timer;
     timer.start();
 
     fileinfo* roma = new fileinfo;
-    roma->setPath("/home/pedro/Documents/samples/whatever.bmp");
+    roma->setPath("/home/pedro/Documents/samples/standardascii");
     roma->byteFrequency();
 
     tree* invicta = new tree(roma);
@@ -91,9 +91,9 @@
 
     qDebug() << "Complete:" << timer.elapsed()/1000 << " seconds\n";
     return 0;
-}*/
-int main(){
-    QString path = "/home/pedro/Documents/samples/test.huff";
+}
+/*int main(){
+    QString path = "/home/pedro/Documents/samples/whatever.huff";
     QString dir = "";
     if(path.contains(".huff")){
         std::cout << "Beginning decompression:\n";
@@ -101,15 +101,15 @@ int main(){
         QTime timer;
         timer.start();
 
-        if(dir == ""){
-            dir = QFileInfo(path).absolutePath();
-        }
         fileinfo* delenda = new fileinfo;
         delenda->setPath(path);
-        delenda->decodeHeader(path);
+        qDebug() << endl << "decoding the header:";
+        delenda->decodeHeader(path, dir);
+        qDebug() << "header decoded";
         tree* cartago = new tree(delenda->getRepTree());
-        cartago->decodeTheCode(delenda->getBinaryFile(), delenda->getTrash());
-        //delenda->deliverPackageD();
+        std::cout << "decoding the codification\n";
+        cartago->decodeTheCode(delenda->getBitsFile());
+        delenda->deliverPackageD(cartago->getDecoded());
 
         std::cout << "Complete:" << timer.elapsed()/1000 << " seconds";
     }
@@ -117,4 +117,4 @@ int main(){
         std::cout << "Wrong file, please insert a .huff one.";
     }
     return 0;
-}
+}*/

@@ -32,21 +32,11 @@ tree::tree(QByteArray anyArray)
 {
     root = NULL;
     m_representation = anyArray;
+    qDebug() << endl << "rebuilding tree:";
     root = rebuildTree();
-    qDebug() << "tree rebuilt";
 }
 
 tree::~tree() {}
-
-void tree::toList(fileinfo*& anyFile){
-    for(int count = 0; count < 256; count++) {
-            if(anyFile->getFrequency()[count]) {
-            node * temp = new node(count, anyFile->getFrequency()[count], NULL, NULL);
-            m_list.append(temp);
-        }
-    }
-    qSort(m_list.begin(), m_list.end(), compare);
-}
 
 void tree::toVector(const node* anyNode, QString temp)
 {
@@ -119,30 +109,40 @@ node *tree::rebuildTree(int size)
         uchar curr = m_representation.at(0);
         m_representation.remove(0, 1);
         if(curr == '*'){
-            qDebug() << "added:" << curr << endl;
-            return new node(0, rebuildTree(size+1)->getRepetition() +
-                               rebuildTree(size+1)->getRepetition(),
-                               rebuildTree(size+1), rebuildTree(size+1));
+            qDebug() << "added:" << curr;
+            return new node(rebuildTree(size+1), rebuildTree(size+1));
         }
         else{
             if(curr == '!'){
                 curr = m_representation.at(0);
                 m_representation.remove(0, 1);
             }
-            qDebug() << "added:" << curr << endl;
-            return new node(curr, 0, 0, 0);
+            qDebug() << "added:" << curr;
+            return new node(curr, 0, NULL, NULL);
         }
     }
+    else return NULL;
 }
 
 
-void tree::decodeTheCode(QByteArray anyFile, int anyTrash)
+void tree::decodeTheCode(QVector<bool> anyFile)
 {
-    int aux = anyFile.size();
-    for(int count = 0; count < aux; count++){
 
+    int fileSize = anyFile.size();
+    node* curr = root;
+    for(int count = 0; count < fileSize; count++){
+        if(anyFile.at(count)){
+            curr = curr->getRightchild();
+        }
+        else{
+            curr = curr->getLeftchild();
+        }
+        if(curr->isLeaf()){
+            decoded.append(curr->getSymbol());
+            curr = root;
+        }
     }
-    decoded.resize(decoded.size() - anyTrash);
+
 }
 
 // Getters, Setters, etc //
@@ -154,6 +154,11 @@ QList<node *> tree::getList() const
 QString tree::getRepresentation() const
 {
     return m_representation;
+}
+
+QByteArray tree::getDecoded() const
+{
+    return decoded;
 }
 
 QVector<QString> tree::getVector()
@@ -178,4 +183,14 @@ bool tree::compare(node *x, node *y)
         return x->getSymbol() < y->getSymbol();
     }
     return x->getRepetition() < y->getRepetition();
+}
+
+void tree::toList(fileinfo*& anyFile){
+    for(int count = 0; count < 256; count++) {
+            if(anyFile->getFrequency()[count]) {
+            node * temp = new node(count, anyFile->getFrequency()[count], NULL, NULL);
+            m_list.append(temp);
+        }
+    }
+    qSort(m_list.begin(), m_list.end(), compare);
 }

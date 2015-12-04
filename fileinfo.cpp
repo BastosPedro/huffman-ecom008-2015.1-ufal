@@ -1,5 +1,10 @@
 #include "fileinfo.h"
 
+QVector<bool> fileinfo::getBitsFile() const
+{
+    return bitsFile;
+}
+
 fileinfo::fileinfo()
 {
     m_trash = 0;
@@ -39,23 +44,30 @@ void fileinfo::deliverPackageC(QByteArray anyHeader, QString out){
 
 }
 
-void fileinfo::deliverPackageD(QByteArray counterHeader, QString out)
+void fileinfo::deliverPackageD(QByteArray counterHeader)
 {
-    QFile finalFile(out);
+    if(path_out == ""){
+        path_out = m_path;
+        path_out.chop(path_out.size() - path_out.lastIndexOf('/'));
+        path_out.append("/");
+        path_out.append(fileName);
+    }
+    else{
+        path_out.append(fileName);
+    }
+    QFile finalFile(path_out);
     finalFile.open(QIODevice::WriteOnly);
     finalFile.write(counterHeader);
     finalFile.close();
 }
 
-void fileinfo::decodeHeader(QString path)
+void fileinfo::decodeHeader(QString path, QString out)
 {
-    std::cout << "beginning decoding";
     m_path = path;
-    //path_out = out;
+    path_out = out;
     quint16 auxBytes = 0;
     m_file = new QFile(m_path);
-    Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There was a problem when reading the file");
-    //if(m_file->open(QIODevice::ReadOnly)){
+    Q_ASSERT_X(m_file->open(QIODevice::ReadOnly), Q_FUNC_INFO, "There was a problem while reading the file");
     QDataStream auxStream(m_file);
     auxStream >> auxBytes;
     quint8 auxTrash = 0;
@@ -97,14 +109,15 @@ void fileinfo::decodeHeader(QString path)
     bool flag = m_file->seek(3 + sizeTree + sizeName);
     if(flag){
         while(!m_file->atEnd()){
-                QByteArray auxLine = m_file->read(1024);
-                int lineSize = auxLine.size();
-                for(int count = 0; count < lineSize; count++){
-                    auxBits = binaryStuff::bytetheBit(auxLine.at(count));
-                    bitsFile += auxBits;
-                }
+            QByteArray auxLine = m_file->read(1024);
+            int lineSize = auxLine.size();
+            for(int count = 0; count < lineSize; count++){
+                auxBits = binaryStuff::bytetheBit(auxLine.at(count));
+                bitsFile += auxBits;
             }
         }
+    bitsFile.resize(bitsFile.size() - m_trash);
+    }
     else qDebug() << "a problem has occurred";
     m_file->close();
 }

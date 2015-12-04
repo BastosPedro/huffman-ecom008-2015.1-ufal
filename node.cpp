@@ -52,11 +52,12 @@ node::node(unsigned char symbol, int repetition, node *leftchild, node *rightchi
 
 }
 
-node::node(unsigned char a)
+node::node(node* leftchild, node* rightchild)
 {
-    m_symbol = a;
-    m_leftchild = 0;
-    m_rightchild = 0;
+    m_symbol = 0;
+    m_leftchild = leftchild;
+    m_rightchild = rightchild;
+    m_repetition = leftchild->getRepetition() + rightchild->getRepetition();
 }
 
 node::~node()

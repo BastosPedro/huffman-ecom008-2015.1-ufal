@@ -29,12 +29,12 @@ public:
     void setBitString(QVector<QString> vector);
     void byteFrequency();
     void deliverPackageC(QByteArray anyHeader, QString out);
-    void deliverPackageD(QByteArray counterHeader, QString out);
+    void deliverPackageD(QByteArray counterHeader);
 
 //the methods below are exclusive to the decompression
-    void decodeHeader(QString path);
-    //void getBin(QByteArray anyArray);
+    void decodeHeader(QString path, QString out);
     QString getFileName() const;
+    QVector<bool> getBitsFile() const;
 };
 
 #endif // fileinfo_H

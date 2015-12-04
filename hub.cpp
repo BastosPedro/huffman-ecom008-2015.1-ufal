@@ -43,10 +43,10 @@ void hub::dCommand(QString path, QString dir)
         }
         fileinfo* dalenda = new fileinfo;
         dalenda->setPath(path);
-        dalenda->decodeHeader(path);
+        dalenda->decodeHeader(path, dir);
         tree* carthago = new tree(dalenda->getRepTree());
         //carthago->rebuildTree(tree::m_representation.size());
-        carthago->decodeTheCode(dalenda->getBinaryFile(), dalenda->getTrash());
+        carthago->decodeTheCode(dalenda->getBitsFile());
         //dalenda->deliverPackageD();
 
         std::cout << "Complete:" << temporis.elapsed()/1000 << " seconds";
